@@ -16,11 +16,15 @@ public class Lumi {
     public static void main(String[] args) {
         greet();
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        if (input.equals("bye")) {
-            bye();
-        } else {
-            System.out.println(input);
+        while (true) {
+            String input = scanner.nextLine();
+            if (input.equals("bye")) {
+                bye();
+                break;
+            } else {
+                System.out.println(input);
+            }
         }
+        scanner.close();
     }
 }
