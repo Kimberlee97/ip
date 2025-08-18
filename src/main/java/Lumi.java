@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Lumi {
     private static final String LOGO = "LUMI (˶ˆᗜˆ˵)";
 
@@ -13,6 +15,12 @@ public class Lumi {
 
     public static void main(String[] args) {
         greet();
-        bye();
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        if (input.equals("bye")) {
+            bye();
+        } else {
+            System.out.println(input);
+        }
     }
 }
