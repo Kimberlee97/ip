@@ -18,7 +18,6 @@ public class Lumi {
         private final String type;
 
         public Task(String desc) {
-            this.desc = desc;
             this.isDone = false;
             String[] taskDesc = desc.split(" ", 2);
             String taskType = taskDesc[0];
@@ -26,12 +25,17 @@ public class Lumi {
             switch (taskType) {
                 case "todo":
                     this.type = TODO;
+                    this.desc = taskDesc[1];
                     break;
                 case "deadline":
                     this.type = DEADLINE;
+                    String[] deadlineParts = taskDesc[1].split("/by");
+                    this.desc = deadlineParts[0] + "(by: " + deadlineParts[1] + ")";
                     break;
                 case "event":
                     this.type = EVENT;
+                    String[] eventParts = taskDesc[1].split("/from|/to");
+                    this.desc = eventParts[0] + "(from: " + eventParts[1] + " to: " + eventParts[2] + ")";
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid task type");
