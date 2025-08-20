@@ -25,9 +25,12 @@ public class Lumi {
                 bye();
                 break;
             } else if (input.equals("list")){
+                if (list.isEmpty()) {
+                    System.out.println("No items yet");
+                }
                 for (int i = 0; i < list.size(); i++) {
                     int index = i + 1;
-                    System.out.println(index + ". " + list.get(i));
+                    System.out.println(index + ". [" + "] " + list.get(i));
                 }
             } else {
                 list.add(input);
