@@ -1,0 +1,13 @@
+list
+deadline Do Homework /by 12pm
+event Birthday /from 31 Aug /to 31 Aug
+todo Buy eggs
+mark 2
+mark 1
+list
+unmark 2
+list
+unmark 4
+mark1
+Buy bread
+bye

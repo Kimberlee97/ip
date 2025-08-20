@@ -29,7 +29,7 @@ public class Lumi {
                     break;
                 case "deadline":
                     this.type = DEADLINE;
-                    String[] deadlineParts = taskDesc[1].split("/by");
+                    String[] deadlineParts = taskDesc[1].split("/by ");
                     this.desc = deadlineParts[0] + "(by: " + deadlineParts[1] + ")";
                     break;
                 case "event":
@@ -62,7 +62,7 @@ public class Lumi {
 
     /** Prints a greeting */
     private void greet() {
-        System.out.println("Hello from\n" + LOGO + "\nWhat can I do for you?");
+        System.out.println("Hello from " + LOGO + "\nWhat can I do for you?");
     }
 
     /** Prints a goodbye message */
@@ -75,7 +75,7 @@ public class Lumi {
         try {
             Task newTask = new Task(input);
             list.add(newTask);
-            System.out.println("added: " + input);
+            System.out.println("added: " + newTask.toString());
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
