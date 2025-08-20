@@ -34,7 +34,7 @@ public class Lumi {
                     break;
                 case "event":
                     this.type = EVENT;
-                    String[] eventParts = taskDesc[1].split("/from|/to");
+                    String[] eventParts = taskDesc[1].split("/from |/to ");
                     this.desc = eventParts[0] + "(from: " + eventParts[1] + " to: " + eventParts[2] + ")";
                     break;
                 default:
@@ -45,7 +45,7 @@ public class Lumi {
         /** Marks task as done */
         public void mark() {
             this.isDone = true;
-            System.out.println("Nice! I have marked this task as done: " + this.desc);
+            System.out.println("Yay! I have marked this task as done: " + this.desc);
         }
 
         /** Marks task as undone */
