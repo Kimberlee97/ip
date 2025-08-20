@@ -112,6 +112,20 @@ public class Lumi {
         }
     }
 
+    /** Deletes an item */
+    private void delete(String i) {
+        try {
+            int index = Integer.parseInt(i) - 1;
+            String task = list.get(index).toString();
+            list.remove(index);
+            System.out.println("This task has been deleted: " + task);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Please input a valid task number!");
+        } catch (NumberFormatException e) {
+            System.out.println("Please input a number! e.g. delete 1");
+        }
+    }
+
     /** Prints out the list */
     private static void printList() {
         if (list.isEmpty()) {
@@ -153,6 +167,13 @@ public class Lumi {
                 } catch (NumberFormatException e) {
                     System.out.println("Please enter a number after 'mark'/'unmark'");
                 }
+            } else if (input.startsWith("delete")) {
+                String[] parts = input.split(" ");
+                if (parts.length < 2) {
+                    System.out.println("Please provide the task you wish to delete e.g. delete 1");
+                    continue;
+                }
+                bot.delete(parts[1]);
             } else {
                 bot.add(input);
             }
