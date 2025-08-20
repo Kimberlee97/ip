@@ -6,16 +6,36 @@ public class Lumi {
     private static final String LOGO = "LUMI (˶ˆᗜˆ˵)";
     private static final String DONE = "[X]";
     private static final String UNDONE = "[ ]";
+    private static final String TODO = "[T]";
+    private static final String DEADLINE = "[D]";
+    private static final String EVENT = "[E]";
 
     private static List<Task> list = new ArrayList<>();
 
     static class Task {
         private boolean isDone;
         private final String desc;
+        private final String type;
 
         public Task(String desc) {
             this.desc = desc;
             this.isDone = false;
+            String[] taskDesc = desc.split(" ", 2);
+            String taskType = taskDesc[0];
+
+            switch (taskType) {
+                case "todo":
+                    this.type = TODO;
+                    break;
+                case "deadline":
+                    this.type = DEADLINE;
+                    break;
+                case "event":
+                    this.type = EVENT;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid task type");
+            }
         }
 
         /** Marks task as done */
@@ -32,7 +52,7 @@ public class Lumi {
 
         @Override
         public String toString() {
-            return (isDone ? DONE : UNDONE) + " " + this.desc;
+            return this.type + (isDone ? DONE : UNDONE) + " " + this.desc;
         }
     }
 
@@ -48,9 +68,13 @@ public class Lumi {
 
     /** Adds a new item */
     private void add(String input) {
-        Task newTask = new Task(input);
-        list.add(newTask);
-        System.out.println("added: " + input);
+        try {
+            Task newTask = new Task(input);
+            list.add(newTask);
+            System.out.println("added: " + input);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /** Prints out the list */
