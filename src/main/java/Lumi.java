@@ -9,7 +9,7 @@ public class Lumi {
 
     private static List<Task> list = new ArrayList<>();
 
-    class Task {
+    static class Task {
         private boolean isDone;
         private final String desc;
 
@@ -76,12 +76,20 @@ public class Lumi {
             } else if (input.equals("list")) {
                 printList();
             } else if (input.startsWith("unmark") || input.startsWith("mark")) {
-                String[] parts = input.split(" ");
-                int index = Integer.parseInt(parts[1]) - 1;
-                if (parts[0].equals("unmark")) {
-                    list.get(index).unmark();
-                } else {
-                    list.get(index).mark();
+                try {
+                    String[] parts = input.split(" ");
+                    if (parts.length < 2) {
+                        System.out.println("Please provide a task number e.g. mark 1");
+                        continue;
+                    }
+                    int index = Integer.parseInt(parts[1]) - 1;
+                    if (parts[0].equals("unmark")) {
+                        list.get(index).unmark();
+                    } else {
+                        list.get(index).mark();
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Please enter a valid task number");
                 }
             } else {
                 bot.add(input);
