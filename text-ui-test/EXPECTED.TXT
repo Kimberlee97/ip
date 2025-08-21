@@ -15,5 +15,6 @@ Oki, I've marked this task as undone: Birthday (from: 31 Aug  to: 31 Aug)
 3. [T][ ] Buy eggs
 Please enter a valid task number
 Please provide a task number e.g. mark 1
-Invalid task type
+Oh no! >.<
+I'm not sure what this is, please try again!
 Bye! See you next time :>

@@ -77,7 +77,7 @@ public class Lumi {
                     tempType = e.getTag();
                     break;
                 default:
-                    throw new InvalidTaskException("Oh no! >.< \nI'm not sure what this is, please try again!");
+                    throw new InvalidTaskException("Oh no! >.<\nI'm not sure what this is, please try again!");
             }
             this.type = tempType;
             this.desc = tempDesc;
