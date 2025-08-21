@@ -6,11 +6,26 @@ public class Lumi {
     private static final String LOGO = "LUMI (˶ˆᗜˆ˵)";
     private static final String DONE = "[X]";
     private static final String UNDONE = "[ ]";
-    private static final String TODO = "[T]";
-    private static final String DEADLINE = "[D]";
-    private static final String EVENT = "[E]";
 
     private static List<Task> list = new ArrayList<>();
+
+    public enum TaskType {
+        TODO, DEADLINE, EVENT
+    }
+
+    public static class Type {
+        private final String tag;
+        public Type(TaskType type) {
+            this.tag = switch (type) {
+                case TODO -> "[T]";
+                case DEADLINE -> "[D]";
+                case EVENT -> "[E]";
+            };
+        }
+        public String getTag() {
+            return this.tag;
+        }
+    }
 
     static class Task {
         private boolean isDone;
@@ -19,26 +34,25 @@ public class Lumi {
 
         public Task(String desc) throws IllegalArgumentException{
             this.isDone = false;
-            String tempType = "";
             String tempDesc = "";
+            String tempType = "";
             String[] taskDesc = desc.split(" ", 2);
             if (taskDesc.length < 2) throw new IllegalArgumentException("Please add a task in the format:" +
                     "todo <task>\n" +
                     "deadline <task> /by <deadline>\n" +
                     "event <task> /from <date/time> /to <date/time>");
-            String taskType = taskDesc[0];
 
-            switch (taskType) {
+            switch (taskDesc[0]) {
                 // adds a todo task
                 case "todo":
-                    tempType = TODO;
                     if (taskDesc[1].trim().isEmpty()) throw new IllegalArgumentException("Please add a todo task in " +
                             "the format:\n todo <task> (task should not be empty :> )");
                     tempDesc = taskDesc[1];
+                    Type t = new Type(TaskType.TODO);
+                    tempType = t.getTag();
                     break;
                 // adds a deadline task
                 case "deadline":
-                    tempType = DEADLINE;
                     String[] deadlineParts = taskDesc[1].split("/by ");
                     if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty() ||
                             deadlineParts[1].trim().isEmpty()) {
@@ -46,10 +60,11 @@ public class Lumi {
                                 "in the format: deadline <task> /by <deadline>");
                     }
                     tempDesc = deadlineParts[0] + "(by: " + deadlineParts[1] + ")";
+                    Type d = new Type(TaskType.DEADLINE);
+                    tempType = d.getTag();
                     break;
                 // adds an event
                 case "event":
-                    tempType = EVENT;
                     String[] eventParts = taskDesc[1].split("/from |/to ");
                     if (eventParts.length < 3 || eventParts[0].trim().isEmpty() || eventParts[1].trim().isEmpty() ||
                             eventParts[2].trim().isEmpty()) {
@@ -57,9 +72,11 @@ public class Lumi {
                                 "format: event <task> /from <date/time> /to <date/time>");
                     }
                     tempDesc = eventParts[0] + "(from: " + eventParts[1] + " to: " + eventParts[2] + ")";
+                    Type e = new Type(TaskType.EVENT);
+                    tempType = e.getTag();
                     break;
                 default:
-                    throw new IllegalArgumentException("Oh no! >.< \n I'm not sure what this is, please try again!");
+                    throw new IllegalArgumentException("Oh no! >.< \nI'm not sure what this is, please try again!");
             }
             this.type = tempType;
             this.desc = tempDesc;
