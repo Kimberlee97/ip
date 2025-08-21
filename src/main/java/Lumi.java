@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
+import exceptions.InvalidTaskException;
 
 public class Lumi {
     private static final String LOGO = "LUMI (˶ˆᗜˆ˵)";
@@ -32,12 +33,12 @@ public class Lumi {
         private final String desc;
         private final String type;
 
-        public Task(String desc) throws IllegalArgumentException{
+        public Task(String desc) throws InvalidTaskException {
             this.isDone = false;
             String tempDesc = "";
             String tempType = "";
             String[] taskDesc = desc.split(" ", 2);
-            if (taskDesc.length < 2) throw new IllegalArgumentException("Please add a task in the format:" +
+            if (taskDesc.length < 2) throw new InvalidTaskException("Please add a task in the format:" +
                     "todo <task>\n" +
                     "deadline <task> /by <deadline>\n" +
                     "event <task> /from <date/time> /to <date/time>");
@@ -45,8 +46,8 @@ public class Lumi {
             switch (taskDesc[0]) {
                 // adds a todo task
                 case "todo":
-                    if (taskDesc[1].trim().isEmpty()) throw new IllegalArgumentException("Please add a todo task in " +
-                            "the format:\n todo <task> (task should not be empty :> )");
+                    if (taskDesc[1].trim().isEmpty()) throw new InvalidTaskException("Please add a todo task in " +
+                            "the format:\ntodo <task> (task should not be empty :> )");
                     tempDesc = taskDesc[1];
                     Type t = new Type(TaskType.TODO);
                     tempType = t.getTag();
@@ -56,7 +57,7 @@ public class Lumi {
                     String[] deadlineParts = taskDesc[1].split("/by ");
                     if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty() ||
                             deadlineParts[1].trim().isEmpty()) {
-                        throw new IllegalArgumentException("Please enter a deadline task " +
+                        throw new InvalidTaskException("Please enter a deadline task " +
                                 "in the format: deadline <task> /by <deadline>");
                     }
                     tempDesc = deadlineParts[0] + "(by: " + deadlineParts[1] + ")";
@@ -68,7 +69,7 @@ public class Lumi {
                     String[] eventParts = taskDesc[1].split("/from |/to ");
                     if (eventParts.length < 3 || eventParts[0].trim().isEmpty() || eventParts[1].trim().isEmpty() ||
                             eventParts[2].trim().isEmpty()) {
-                        throw new IllegalArgumentException("Please enter an event task in the " +
+                        throw new InvalidTaskException("Please enter an event task in the " +
                                 "format: event <task> /from <date/time> /to <date/time>");
                     }
                     tempDesc = eventParts[0] + "(from: " + eventParts[1] + " to: " + eventParts[2] + ")";
@@ -76,7 +77,7 @@ public class Lumi {
                     tempType = e.getTag();
                     break;
                 default:
-                    throw new IllegalArgumentException("Oh no! >.< \nI'm not sure what this is, please try again!");
+                    throw new InvalidTaskException("Oh no! >.< \nI'm not sure what this is, please try again!");
             }
             this.type = tempType;
             this.desc = tempDesc;
@@ -124,7 +125,7 @@ public class Lumi {
             Task newTask = new Task(input);
             list.add(newTask);
             System.out.println("added: " + newTask.toString());
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidTaskException e) {
             System.out.println(e.getMessage());
         }
     }
