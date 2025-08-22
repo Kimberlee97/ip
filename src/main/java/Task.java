@@ -1,6 +1,8 @@
 import exceptions.InvalidTaskException;
 
 public class Task {
+    private static final String DONE = "[X]";
+    private static final String UNDONE = "[ ]";
     private boolean isDone;
     private final String desc;
     private final String type;
@@ -21,7 +23,7 @@ public class Task {
                 if (taskDesc[1].trim().isEmpty()) throw new InvalidTaskException("Please add a todo task in " +
                         "the format:\ntodo <task> (task should not be empty :> )");
                 tempDesc = taskDesc[1];
-                Lumi.Type t = new Lumi.Type(Lumi.TaskType.TODO);
+                Type t = new Type(TaskType.TODO);
                 tempType = t.getTag();
                 break;
             // adds a deadline task
@@ -33,7 +35,7 @@ public class Task {
                             "in the format: deadline <task> /by <deadline>");
                 }
                 tempDesc = deadlineParts[0] + "(by: " + deadlineParts[1] + ")";
-                Lumi.Type d = new Lumi.Type(Lumi.TaskType.DEADLINE);
+                Type d = new Type(TaskType.DEADLINE);
                 tempType = d.getTag();
                 break;
             // adds an event
@@ -45,7 +47,7 @@ public class Task {
                             "format: event <task> /from <date/time> /to <date/time>");
                 }
                 tempDesc = eventParts[0] + "(from: " + eventParts[1] + " to: " + eventParts[2] + ")";
-                Lumi.Type e = new Lumi.Type(Lumi.TaskType.EVENT);
+                Type e = new Type(TaskType.EVENT);
                 tempType = e.getTag();
                 break;
             default:
@@ -53,5 +55,30 @@ public class Task {
         }
         this.type = tempType;
         this.desc = tempDesc;
+    }
+
+    /** Marks task as done */
+    public void mark() {
+        if (this.isDone) {
+            System.out.println("This task has already been marked as done ՞. .՞");
+            return;
+        }
+        this.isDone = true;
+        System.out.println("Yay! I have marked this task as done: " + this.desc);
+    }
+
+    /** Marks task as undone */
+    public void unmark() {
+        if (!this.isDone) {
+            System.out.println("This task has already been marked undone ՞. .՞");
+            return;
+        }
+        this.isDone = false;
+        System.out.println("Oki, I've marked this task as undone: " + this.desc);
+    }
+
+    @Override
+    public String toString() {
+        return this.type + (isDone ? DONE : UNDONE) + " " + this.desc;
     }
 }

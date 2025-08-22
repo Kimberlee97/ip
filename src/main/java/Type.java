@@ -1,6 +1,6 @@
 public class Type {
     private final String tag;
-    public Type(Lumi.TaskType type) {
+    public Type(TaskType type) {
         this.tag = switch (type) {
             case TODO -> "[T]";
             case DEADLINE -> "[D]";
