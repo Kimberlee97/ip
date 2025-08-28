@@ -5,12 +5,12 @@ public class Deadline extends Task {
 
     public Deadline(String desc) throws InvalidTaskException {
         super(TaskType.DEADLINE);
-        String[] deadlineParts = desc.split("/by");
+        String[] deadlineParts = desc.split("/by|\\|By: ");
         if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty() || deadlineParts[1].trim().isEmpty()) {
             throw new InvalidTaskException("Please enter a deadline task "
                     + "in the format: deadline <task> /by <deadline>");
         } else {
-            this.desc = deadlineParts[0] + " by " + deadlineParts[1];
+            this.desc = deadlineParts[0] + "|By: " + deadlineParts[1];
         }
     }
 

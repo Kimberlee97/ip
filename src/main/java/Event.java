@@ -5,13 +5,13 @@ public class Event extends Task{
 
     public Event(String desc) throws InvalidTaskException {
         super(TaskType.EVENT);
-        String[] eventParts = desc.split("/from|/to");
+        String[] eventParts = desc.split("/from|/to|\\|From: |\\|To: ");
         if (eventParts.length < 3 || eventParts[0].trim().isEmpty() || eventParts[1].trim().isEmpty()
                 || eventParts[2].trim().isEmpty()) {
             throw new InvalidTaskException("Please enter an event task in the "
                     + "format: event <task> /from <date/time> /to <date/time>");
         } else {
-            this.desc = eventParts[0] + " from" + eventParts[1] + " to" + eventParts[2];
+            this.desc = eventParts[0] + "|From: " + eventParts[1] + "|To: " + eventParts[2];
         }
     }
 

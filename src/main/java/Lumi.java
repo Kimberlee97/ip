@@ -13,7 +13,60 @@ import exceptions.InvalidTaskException;
 public class Lumi {
     private static final String LOGO = "LUMI (˶ˆᗜˆ˵)";
 
-    private static List<Task> list = new ArrayList<>();
+    private List<Task> list = new ArrayList<>();
+
+    private static final String FILEPATH = "./data/lumi.txt";
+
+    /** Converts the file to a List<Task> */
+    private void createList() throws IOException, InvalidTaskException {
+        File file = new File(FILEPATH);
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            file.createNewFile();
+            scanner = new Scanner(file);
+        }
+        while (scanner.hasNext()) {
+            Task task = convertStringToTask(scanner.nextLine());
+            this.list.add(task);
+        }
+    }
+
+    /** Converts a String to a Task */
+    private static Task convertStringToTask(String string) throws InvalidTaskException {
+        String[] taskParts = string.split("\\| |\\|", 3);
+        String type = taskParts[0];
+        String status = taskParts[1];
+        String desc = taskParts[2];
+        String typeInput = "";
+        boolean isDone = false;
+        switch (type) {
+        case "[T]":
+            typeInput = "todo";
+            break;
+        case "[D]":
+            typeInput = "deadline";
+            break;
+        case "[E]":
+            typeInput = "event";
+        }
+
+        switch (status) {
+        case "[X]":
+            isDone = true;
+            break;
+        case "[ ]":
+            isDone = false;
+            break;
+        }
+        String input = typeInput + " " + desc;
+        Task task = Parser.parse(input);
+        if (isDone) {
+            task.mark();
+        }
+        return task;
+    }
 
     /** Prints a greeting */
     private void greet() {
@@ -30,10 +83,11 @@ public class Lumi {
         try {
             Task newTask = Parser.parse(input);
             list.add(newTask);
-            System.out.println("added: " + newTask.toString());
+            System.out.println("Task added: " + newTask.toString());
         } catch (InvalidTaskException e) {
             System.out.println(e.getMessage());
         }
+
     }
 
     /** Deletes an item */
@@ -51,28 +105,50 @@ public class Lumi {
     }
 
     /** Prints out the list */
-    private static void printList() {
-        if (list.isEmpty()) {
-            System.out.println("No items yet");
-        }
-        for (int i = 0; i < list.size(); i++) {
-            int index = i + 1;
-            System.out.println(index + ". " + list.get(i).toString());
+    private void printList() throws FileNotFoundException {
+        if (this.list.isEmpty()) {
+            System.out.println("No items yet!");
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                System.out.println(list.get(i));
+            }
         }
     }
 
-    public static void main(String[] args) {
+    /** Updates the file */
+    private void updateFile() throws IOException {
+        try {
+            FileWriter fw = new FileWriter(FILEPATH);
+            for (int i = 0; i < this.list.size(); i++) {
+                fw.write(this.list.get(i).toString());
+                fw.write("\n");
+            }
+            fw.close();
+        } catch (IOException e) {
+            System.out.println("Unable to update your file, sorry!");
+            throw e;
+        }
+        System.out.println("Your file has been updated >.<");
+    }
+
+    public static void main(String[] args) throws IOException, InvalidTaskException {
         Lumi bot = new Lumi();
+        bot.createList();
         bot.greet();
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
             if (input.trim().isEmpty()) continue;
             if (input.equals("bye")) {
+                bot.updateFile();
                 bot.bye();
                 break;
             } else if (input.equals("list")) {
-                printList();
+                try {
+                    bot.printList();
+                } catch (FileNotFoundException e) {
+                    System.out.println("Error! We can't find the list :");
+                }
             } else if (input.startsWith("unmark") || input.startsWith("mark")) {
                 try {
                     String[] parts = input.split(" ");
@@ -82,9 +158,9 @@ public class Lumi {
                     }
                     int index = Integer.parseInt(parts[1]) - 1;
                     if (parts[0].equals("unmark")) {
-                        list.get(index).unmark();
+                        bot.list.get(index).unmark();
                     } else {
-                        list.get(index).mark();
+                        bot.list.get(index).mark();
                     }
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("Please enter a valid task number");

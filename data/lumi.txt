@@ -1,4 +1,1 @@
-todo homework
-event school /from 2pm /to 3pm
-deadline exam /by 5pm
-bye
+[E]|[ ]| school |From: 2pm |To: 4pm
