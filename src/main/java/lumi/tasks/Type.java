@@ -1,3 +1,5 @@
+package lumi.tasks;
+
 public class Type {
     private final String tag;
     public Type(TaskType type) {

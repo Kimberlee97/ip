@@ -1,6 +1,12 @@
+package lumi.Lumi;
+
+import lumi.storage.*;
+import lumi.tasks.*;
+import lumi.exceptions.*;
+import lumi.ui.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import exceptions.LumiException;
 
 import java.util.Scanner;
 

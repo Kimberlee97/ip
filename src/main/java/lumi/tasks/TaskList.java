@@ -1,4 +1,8 @@
-import exceptions.LumiException;
+package lumi.tasks;
+
+import lumi.parsers.*;
+import lumi.exceptions.*;
+
 import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
