@@ -1,0 +1,26 @@
+import exceptions.InvalidTaskException;
+
+public class Parser {
+    public static Task parse(String desc) throws InvalidTaskException {
+        String[] taskParts = desc.split(" ", 2);
+        if (taskParts.length <= 1) {
+            throw new InvalidTaskException("Please add a task in the format: todo <task>\n"
+                    + "deadline <task> /by <deadline>\nevent <task> /from <date/time> /to <date/time");
+        } else {
+            Task task = null;
+            switch (taskParts[0]) {
+            case "todo":
+                task = new Todo(taskParts[1]);
+                return task;
+            case "deadline":
+                task = new Deadline(taskParts[1]);
+                return task;
+            case "event":
+                task = new Event(taskParts[1]);
+                return task;
+            default:
+                throw new InvalidTaskException("Oh no! >.<\nI'm not sure what this is, please try again!");
+            }
+        }
+    }
+}

@@ -1,3 +1,15 @@
 public enum TaskType {
-    TODO, DEADLINE, EVENT
+    TODO("[T]"), DEADLINE("[D]"), EVENT("[E]");
+
+    private final String label;
+    TaskType(String label) {
+        this.label = label;
+
+    }
+
+    @Override
+    public String toString() {
+        return this.label;
+    }
 }
+
