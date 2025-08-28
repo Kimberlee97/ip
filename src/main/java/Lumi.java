@@ -1,6 +1,13 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import java.util.Scanner;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import exceptions.InvalidTaskException;
 
 public class Lumi {
@@ -21,7 +28,7 @@ public class Lumi {
     /** Adds a new item */
     private void add(String input) {
         try {
-            Task newTask = new Task(input);
+            Task newTask = Parser.parse(input);
             list.add(newTask);
             System.out.println("added: " + newTask.toString());
         } catch (InvalidTaskException e) {
