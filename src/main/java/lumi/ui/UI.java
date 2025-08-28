@@ -1,3 +1,7 @@
+package lumi.ui;
+
+import lumi.tasks.*;
+
 public class UI {
     private static final String LOGO = "LUMI (˶ˆᗜˆ˵)";
 

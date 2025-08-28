@@ -1,4 +1,4 @@
-package exceptions;
+package lumi.exceptions;
 
 public class LumiException extends Exception {
     public LumiException(String message) {

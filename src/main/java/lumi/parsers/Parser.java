@@ -1,4 +1,8 @@
-import exceptions.LumiException;
+package lumi.parsers;
+
+import lumi.tasks.*;
+
+import lumi.exceptions.*;
 
 public class Parser {
     public static Task parse(String desc) throws LumiException {
