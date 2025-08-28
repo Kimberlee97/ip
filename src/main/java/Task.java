@@ -1,6 +1,6 @@
-import exceptions.InvalidTaskException;
+import exceptions.LumiException;
 
-public class Task {
+public abstract class Task {
     private static final String DONE = "[X]";
     private static final String UNDONE = "[ ]";
     private boolean isDone;
@@ -17,13 +17,21 @@ public class Task {
     }
 
     /** Marks task as done */
-    public void mark() {
+    public Task mark() throws LumiException {
+        if (this.isDone) {
+            throw new LumiException("This task has already been marked done");
+        }
         this.isDone = true;
+        return this;
     }
 
     /** Marks task as undone */
-    public void unmark() {
+    public Task unmark() throws LumiException {
+        if (!this.isDone) {
+            throw new LumiException("This task has already been marked undone");
+        }
         this.isDone = false;
+        return this;
     }
 
     @Override

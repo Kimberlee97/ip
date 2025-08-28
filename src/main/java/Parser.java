@@ -1,10 +1,10 @@
-import exceptions.InvalidTaskException;
+import exceptions.LumiException;
 
 public class Parser {
-    public static Task parse(String desc) throws InvalidTaskException {
+    public static Task parse(String desc) throws LumiException {
         String[] taskParts = desc.split(" ", 2);
         if (taskParts.length <= 1) {
-            throw new InvalidTaskException("Please add a task in the format: todo <task>\n"
+            throw new LumiException("Please add a task in the format: todo <task>\n"
                     + "deadline <task> /by <dd/MM/yyyy or dd MM yyyy HH:mm>\n"
                     + "event <task> /from <dd/MM/yyyy HH:mm or dd MM yyyy HH:mm> "
                     + "/to <dd/MM/yyyy HH:mm or dd MM yyyy HH:mm");
@@ -21,7 +21,7 @@ public class Parser {
                 task = new Event(taskParts[1]);
                 return task;
             default:
-                throw new InvalidTaskException("Oh no! >.<\nI'm not sure what this is, please try again!");
+                throw new LumiException("Oh no! >.<\nI'm not sure what this is, please try again!");
             }
         }
     }
