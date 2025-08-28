@@ -1,5 +1,8 @@
 import exceptions.InvalidTaskException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+
 public class Event extends Task{
     private final String desc;
 
@@ -11,7 +14,14 @@ public class Event extends Task{
             throw new InvalidTaskException("Please enter an event task in the "
                     + "format: event <task> /from <date/time> /to <date/time>");
         } else {
-            this.desc = eventParts[0] + "|From: " + eventParts[1] + "|To: " + eventParts[2];
+            try {
+                LocalDateTime from = DateTimeParser.parseDate(eventParts[1]);
+                LocalDateTime to = DateTimeParser.parseDate(eventParts[2]);
+                this.desc = eventParts[0] + "|From: " + DateTimeParser.format(from) + "|To: "
+                        + DateTimeParser.format(to);
+            } catch (DateTimeParseException e) {
+                throw new InvalidTaskException(e.getMessage());
+            }
         }
     }
 
