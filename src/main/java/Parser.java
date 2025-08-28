@@ -5,7 +5,9 @@ public class Parser {
         String[] taskParts = desc.split(" ", 2);
         if (taskParts.length <= 1) {
             throw new InvalidTaskException("Please add a task in the format: todo <task>\n"
-                    + "deadline <task> /by <deadline>\nevent <task> /from <date/time> /to <date/time");
+                    + "deadline <task> /by <dd/MM/yyyy or dd MM yyyy HH:mm>\n"
+                    + "event <task> /from <dd/MM/yyyy HH:mm or dd MM yyyy HH:mm> "
+                    + "/to <dd/MM/yyyy HH:mm or dd MM yyyy HH:mm");
         } else {
             Task task = null;
             switch (taskParts[0]) {

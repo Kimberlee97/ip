@@ -28,8 +28,12 @@ public class Lumi {
             scanner = new Scanner(file);
         }
         while (scanner.hasNext()) {
-            Task task = convertStringToTask(scanner.nextLine());
-            this.list.add(task);
+            try {
+                Task task = convertStringToTask(scanner.nextLine());
+                this.list.add(task);
+            } catch (InvalidTaskException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -83,7 +87,7 @@ public class Lumi {
         try {
             Task newTask = Parser.parse(input);
             list.add(newTask);
-            System.out.println("Task added: " + newTask.toString());
+            System.out.println("Task added: " + newTask);
         } catch (InvalidTaskException e) {
             System.out.println(e.getMessage());
         }
