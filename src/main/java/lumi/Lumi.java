@@ -1,4 +1,4 @@
-package lumi.Lumi;
+package lumi;
 
 import lumi.storage.*;
 import lumi.tasks.*;
