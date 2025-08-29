@@ -20,9 +20,9 @@ public class Lumi {
         this.storage = new Storage(filePath);
         try {
             this.tasks = new TaskList(storage.load());
-        } catch (IOException e) {
+        } catch (IOException | LumiException e) {
+            ui.showLoadingError(e);
             this.tasks = new TaskList();
-            throw new LumiException("Unable to initialize: " + e.getMessage());
         }
     }
 
@@ -84,7 +84,7 @@ public class Lumi {
     }
 
     public static void main(String[] args) throws LumiException {
-        Lumi lumi = new Lumi("./data/lumi.txt");
+        Lumi lumi = new Lumi("./data/test.txt");
         lumi.run();
     }
 }

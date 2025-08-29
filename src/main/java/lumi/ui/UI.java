@@ -1,5 +1,6 @@
 package lumi.ui;
 
+import lumi.exceptions.LumiException;
 import lumi.tasks.*;
 
 public class UI {
@@ -28,5 +29,10 @@ public class UI {
     /** Prints a message for successful mark attempts */
     public void printUnmarkMessage(Task task) {
         System.out.println("Oki, I've marked your task undone: " + task);
+    }
+
+    /** Prints a message for failed load */
+    public void showLoadingError(Exception e) {
+        System.out.println("Unable to load your file: " + e.getMessage() + "\n" + "Starting with a new list...");
     }
 }
