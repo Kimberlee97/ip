@@ -34,45 +34,53 @@ public class Storage {
             scanner = new Scanner(file);
         }
         while (scanner.hasNext()) {
-            Task task = Storage.convertStringToTask(scanner.nextLine());
-            this.list.add(task);
+            try {
+                Task task = Storage.convertStringToTask(scanner.nextLine());
+                this.list.add(task);
+            } catch (LumiException e) {
+                throw new LumiException("Unable to load file: " + e.getMessage());
+            }
         }
         return list;
     }
 
     /** Converts a String to a Task */
     private static Task convertStringToTask(String string) throws LumiException {
-        String[] taskParts = string.split("\\| |\\|", 3);
-        String type = taskParts[0];
-        String status = taskParts[1];
-        String desc = taskParts[2];
-        String typeInput = "";
-        boolean isDone = false;
-        switch (type) {
-        case "[T]":
-            typeInput = "todo";
-            break;
-        case "[D]":
-            typeInput = "deadline";
-            break;
-        case "[E]":
-            typeInput = "event";
-        }
+        try {
+            String[] taskParts = string.split("\\| |\\|", 3);
+            String type = taskParts[0];
+            String status = taskParts[1];
+            String desc = taskParts[2];
+            String typeInput = "";
+            boolean isDone = false;
+            switch (type) {
+            case "[T]":
+                typeInput = "todo";
+                break;
+            case "[D]":
+                typeInput = "deadline";
+                break;
+            case "[E]":
+                typeInput = "event";
+            }
 
-        switch (status) {
-        case "[X]":
-            isDone = true;
-            break;
-        case "[ ]":
-            isDone = false;
-            break;
+            switch (status) {
+            case "[X]":
+                isDone = true;
+                break;
+            case "[ ]":
+                isDone = false;
+                break;
+            }
+            String input = typeInput + " " + desc;
+            Task task = Parser.parse(input);
+            if (isDone) {
+                task.mark();
+            }
+            return task;
+        } catch (LumiException | RuntimeException e) {
+            throw new LumiException(e.getMessage());
         }
-        String input = typeInput + " " + desc;
-        Task task = Parser.parse(input);
-        if (isDone) {
-            task.mark();
-        }
-        return task;
     }
 
     /** Updates the file */
@@ -89,5 +97,4 @@ public class Storage {
         }
         System.out.println("Your file has been updated >.<");
     }
-
 }
