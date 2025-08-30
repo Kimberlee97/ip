@@ -1,6 +1,6 @@
 package lumi.ui;
 
-import lumi.tasks.*;
+import lumi.tasks.Task;
 
 /**
  * Handles all user interaction messages for the application.
@@ -19,7 +19,7 @@ public class UI {
     /**
      * Prints a goodbye message.
      */
-    public void bye() {
+    public void sendGoodbye() {
         System.out.println("Bye! See you next time :>");
     }
 

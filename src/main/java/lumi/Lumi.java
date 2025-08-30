@@ -1,9 +1,13 @@
 package lumi;
 
-import lumi.storage.*;
-import lumi.tasks.*;
-import lumi.exceptions.*;
-import lumi.ui.*;
+import lumi.storage.Storage;
+
+import lumi.tasks.Task;
+import lumi.tasks.TaskList;
+
+import lumi.exceptions.LumiException;
+
+import lumi.ui.UI;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -52,7 +56,7 @@ public class Lumi {
                     } catch (IOException e) {
                         throw new LumiException(e.getMessage());
                     }
-                    this.ui.bye();
+                    this.ui.sendGoodbye();
                     break;
                 } else if (input.equals("list")) {
                     this.tasks.printList();

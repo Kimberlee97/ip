@@ -1,6 +1,6 @@
 package lumi.tasks;
 
-import lumi.exceptions.*;
+import lumi.exceptions.LumiException;
 
 /**
  * This class represents a {@code Todo} task that has a description.
