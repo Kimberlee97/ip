@@ -6,19 +6,9 @@ import lumi.exceptions.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
-/**
- * This class represents a {@code Event} task that has a description and associated start and end dates and times.
- * The input string is validated and parsed into a {@link LocalDateTime} using {@link DateTimeParser}.
- * If the input is malformed, a {@link LumiException} is thrown.
- */
 public class Event extends Task{
     private final String desc;
 
-    /**
-     * Constructs an {@link Event} task from the given user input string.
-     * @param desc User input containing the task description and the event duration.
-     * @throws LumiException If the input string is unable to be parsed successfully.
-     */
     public Event(String desc) throws LumiException {
         super(TaskType.EVENT);
         String[] eventParts = desc.split("/from|/to|\\|From: |\\|To: ");

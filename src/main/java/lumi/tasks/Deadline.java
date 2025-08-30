@@ -6,19 +6,9 @@ import lumi.exceptions.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
-/**
- * This class represents a {@code Deadline} task that has a description and the associated due date and times.
- * The input string is validated and parsed into a {@link LocalDateTime} using {@link DateTimeParser}.
- * If the input is malformed, a {@link LumiException} is thrown.
- */
 public class Deadline extends Task {
     private final String desc;
 
-    /**
-     * Constructs a {@code Deadline} from the given user input string.
-     * @param desc User input containing the task description and the deadline.
-     * @throws LumiException If the input string is unable to be parsed successfully.
-     */
     public Deadline(String desc) throws LumiException {
         super(TaskType.DEADLINE);
         String[] deadlineParts = desc.split("/by |\\|By: ");

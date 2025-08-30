@@ -10,20 +10,12 @@ import java.io.IOException;
 
 import java.util.Scanner;
 
-/**
- * The main controller for the Lumi task manager chatbot.
- * This class facilitates interactions between the user and the chatbot through command-line commands.
- */
 public class Lumi {
     private Storage storage;
     private UI ui;
     private TaskList tasks;
 
-    /**
-     * Instantiates a new {@code Lumi} object.
-     * @param filePath The path to the text file where tasks will be stored.
-     */
-    public Lumi(String filePath) {
+    public Lumi(String filePath) throws LumiException {
         this.ui = new UI();
         this.storage = new Storage(filePath);
         try {
@@ -34,11 +26,6 @@ public class Lumi {
         }
     }
 
-    /**
-     * Starts the Lumi application loop.
-     * Continuously reads user commands from the command-line, processes commands and updates the task list.
-     * The loop terminates when the user enters <code>bye</code>, and the task list is saved to the text file.
-     */
     public void run() {
         this.ui.greet();
         Scanner scanner = new Scanner(System.in);
@@ -55,7 +42,11 @@ public class Lumi {
                     this.ui.bye();
                     break;
                 } else if (input.equals("list")) {
-                    this.tasks.printList();
+                    try {
+                        this.tasks.printList();
+                    } catch (FileNotFoundException e) {
+                        throw new LumiException("Error! We can't find the list :");
+                    }
                 } else if (input.startsWith("unmark") || input.startsWith("mark")) {
                     try {
                         String[] parts = input.split(" ");
@@ -92,13 +83,8 @@ public class Lumi {
         scanner.close();
     }
 
-    /**
-     * Creates a new {@code Lumi} instance with the given filepath.
-     * @param args
-     * @throws
-     */
-    public static void main(String[] args) {
-        Lumi lumi = new Lumi("./data/lumi.txt");
+    public static void main(String[] args) throws LumiException {
+        Lumi lumi = new Lumi("./data/test.txt");
         lumi.run();
     }
 }
