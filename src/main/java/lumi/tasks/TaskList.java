@@ -59,4 +59,22 @@ public class TaskList {
     public List<Task> getList() {
         return this.list;
     }
+
+    /**
+     * Prints the tasks that contain the given keyword.
+     * @param keyword
+     */
+    public void find(String keyword) {
+        String lowercaseKeyword = keyword.toLowerCase();
+        int count = 0;
+        for (int i = 0; i < this.list.size(); i++) {
+            String taskStatement = this.list.get(i).toString();
+            if (taskStatement.toLowerCase().contains(lowercaseKeyword)) {
+                System.out.println(taskStatement);
+                count += 1;
+            }
+        }
+        String conclusion = (count > 0) ? "Here's the tasks I've found ><" : "I couldn't find any matching tasks :<";
+        System.out.println(conclusion);
+    }
 }
