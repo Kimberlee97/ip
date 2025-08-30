@@ -86,6 +86,13 @@ public class Lumi {
                     }
                     Task task = this.tasks.delete(parts[1]);
                     this.ui.printDeleteMessage(task);
+                } else if (input.startsWith("find")) {
+                    String[] parts = input.split("\\s+");
+                    if (parts.length != 2) {
+                        throw new LumiException("Please add exactly one keyword!");
+                    }
+                    String keyword = parts[1].trim();
+                    this.tasks.find(keyword);
                 } else {
                     this.tasks.add(input);
                 }
