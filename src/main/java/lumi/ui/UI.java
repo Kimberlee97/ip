@@ -1,7 +1,6 @@
 package lumi.ui;
 
-import lumi.exceptions.LumiException;
-import lumi.tasks.*;
+import lumi.tasks.Task;
 
 public class UI {
     private static final String LOGO = "LUMI (˶ˆᗜˆ˵)";
@@ -12,7 +11,7 @@ public class UI {
     }
 
     /** Prints a goodbye message */
-    public void bye() {
+    public void sendGoodbye() {
         System.out.println("Bye! See you next time :>");
     }
 

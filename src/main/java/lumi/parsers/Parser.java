@@ -1,8 +1,11 @@
 package lumi.parsers;
 
-import lumi.tasks.*;
+import lumi.tasks.Task;
+import lumi.tasks.Todo;
+import lumi.tasks.Deadline;
+import lumi.tasks.Event;
 
-import lumi.exceptions.*;
+import lumi.exceptions.LumiException;
 
 public class Parser {
     public static Task parse(String desc) throws LumiException {

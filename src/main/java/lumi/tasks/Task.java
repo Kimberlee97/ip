@@ -1,6 +1,6 @@
 package lumi.tasks;
 
-import lumi.exceptions.*;
+import lumi.exceptions.LumiException;
 
 public abstract class Task {
     private static final String DONE = "[X]";

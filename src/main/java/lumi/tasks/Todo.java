@@ -1,6 +1,6 @@
 package lumi.tasks;
 
-import lumi.exceptions.*;
+import lumi.exceptions.LumiException;
 
 public class Todo extends Task {
     private final String desc;

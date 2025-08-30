@@ -4,8 +4,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Unit tests for the {@link TaskList} class.
+ * These tests verify that valid tasks are added to the list.
+ */
 public class TaskListTest {
-    /** Test if todo, deadline and event tasks can be added to the list */
+    /**
+     * Tests that valid {@link Todo}, {@link Deadline} and {@link Event} tasks are added to the {@link TaskList}.
+     */
     @Test
     public void addTaskTest() {
         TaskList tasks = new TaskList();
@@ -17,7 +23,9 @@ public class TaskListTest {
         assertEquals(3, tasks.getList().size());
     }
 
-    /** Tests if invalid task entries will be ignored */
+    /**
+     * Tests if invalid commands will not be added.
+     */
     @Test
     public void invalidTaskTest() {
         TaskList tasks = new TaskList();
