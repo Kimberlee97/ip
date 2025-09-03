@@ -1,18 +1,15 @@
 package lumi;
 
-import lumi.storage.Storage;
-
-import lumi.tasks.Task;
-import lumi.tasks.TaskList;
+import java.io.IOException;
+import java.util.Scanner;
 
 import lumi.exceptions.LumiException;
-
+import lumi.storage.Storage;
+import lumi.tasks.Task;
+import lumi.tasks.TaskList;
 import lumi.ui.UI;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
-import java.util.Scanner;
 
 /**
  * The main controller for the Lumi task manager chatbot.
@@ -48,7 +45,9 @@ public class Lumi {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
-            if (input.trim().isEmpty()) continue;
+            if (input.trim().isEmpty()) {
+                continue;
+            }
             try {
                 if (input.equals("bye")) {
                     try {

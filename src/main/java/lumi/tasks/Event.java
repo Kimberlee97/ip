@@ -1,18 +1,18 @@
 package lumi.tasks;
 
-import lumi.parsers.DateTimeParser;
-
-import lumi.exceptions.LumiException;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+
+import lumi.exceptions.LumiException;
+import lumi.parsers.DateTimeParser;
+
 
 /**
  * This class represents a {@code Event} task that has a description and associated start and end dates and times.
  * The input string is validated and parsed into a {@link LocalDateTime} using {@link DateTimeParser}.
  * If the input is malformed, a {@link LumiException} is thrown.
  */
-public class Event extends Task{
+public class Event extends Task {
     private final String desc;
 
     /**

@@ -1,11 +1,10 @@
 package lumi.parsers;
 
-import lumi.tasks.Task;
-import lumi.tasks.Todo;
+import lumi.exceptions.LumiException;
 import lumi.tasks.Deadline;
 import lumi.tasks.Event;
-
-import lumi.exceptions.LumiException;
+import lumi.tasks.Task;
+import lumi.tasks.Todo;
 
 /**
  * Utility class for parsing raw user input into {@Link Task} objects.

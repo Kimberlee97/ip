@@ -1,20 +1,16 @@
 package lumi.storage;
 
-import lumi.parsers.Parser;
-
-import lumi.tasks.Task;
-
-import lumi.exceptions.LumiException;
-
 import java.io.File;
-import java.io.FileWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Scanner;
+
+import lumi.exceptions.LumiException;
+import lumi.parsers.Parser;
+import lumi.tasks.Task;
 
 /**
  * This class handles storage of {@Link Task} objects.
@@ -92,6 +88,9 @@ public class Storage {
                 break;
             case "[E]":
                 typeInput = "event";
+                break;
+            default:
+                throw new LumiException("Invalid label!");
             }
 
             switch (status) {
@@ -101,6 +100,8 @@ public class Storage {
             case "[ ]":
                 isDone = false;
                 break;
+            default:
+                throw new LumiException("Invalid status!");
             }
             String input = typeInput + " " + desc;
             Task task = Parser.parse(input);
