@@ -1,3 +1,2 @@
-[D]|[ ]| homework |By: 12 10 2005 15:10
+[D]|[X]| homework |By: 12 10 2005 15:10
 [E]|[ ]| party |From: 11 12 2005 12:10|To: 15 10 2006 01:00
-[T]|[ ]| homework

@@ -1,13 +1,10 @@
 package lumi.tasks;
 
-import lumi.parsers.Parser;
-
-import lumi.exceptions.LumiException;
-
-import java.io.FileNotFoundException;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import lumi.exceptions.LumiException;
+import lumi.parsers.Parser;
 
 /**
  * This class represents a list of {@link Task} objects in the Lumi application.
@@ -60,7 +57,7 @@ public class TaskList {
         } catch (IndexOutOfBoundsException e) {
             throw new LumiException("Please input a valid task number!");
         } catch (NumberFormatException e) {
-           throw new LumiException("Please input a number! e.g. delete 1");
+            throw new LumiException("Please input a number! e.g. delete 1");
         }
         return task;
     }

@@ -1,10 +1,11 @@
 package lumi.storage;
 
-import lumi.exceptions.LumiException;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import lumi.exceptions.LumiException;
+
 
 /**
  * Unit tests for the {@link Storage} class

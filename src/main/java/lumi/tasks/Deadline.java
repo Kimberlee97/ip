@@ -1,11 +1,10 @@
 package lumi.tasks;
 
-import lumi.parsers.DateTimeParser;
-
-import lumi.exceptions.LumiException;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+
+import lumi.exceptions.LumiException;
+import lumi.parsers.DateTimeParser;
 
 /**
  * This class represents a {@code Deadline} task that has a description and the associated due date and times.
@@ -28,8 +27,8 @@ public class Deadline extends Task {
                     + "in the format: deadline <task> /by <deadline>");
         } else {
             try {
-                LocalDateTime date_time = DateTimeParser.parseDate(deadlineParts[1]);
-                this.desc = deadlineParts[0] + "|By: " + DateTimeParser.format(date_time);
+                LocalDateTime dateTime = DateTimeParser.parseDate(deadlineParts[1]);
+                this.desc = deadlineParts[0] + "|By: " + DateTimeParser.format(dateTime);
             } catch (DateTimeParseException e) {
                 throw new LumiException(e.getMessage());
             }
