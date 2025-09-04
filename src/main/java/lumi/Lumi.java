@@ -17,6 +17,7 @@ import javafx.application.Platform;
  * This class facilitates interactions between the user and the chatbot through command-line commands.
  */
 public class Lumi {
+    private static final String DEFAULTFILEPATH = "./data/lumi.txt";
     private Storage storage;
     private Dialogue dialogue;
     private TaskList tasks;
@@ -28,6 +29,17 @@ public class Lumi {
     public Lumi(String filePath) {
         this.dialogue = new Dialogue();
         this.storage = new Storage(filePath);
+        try {
+            this.tasks = new TaskList(storage.load());
+        } catch (IOException | LumiException e) {
+            dialogue.showLoadingError(e);
+            this.tasks = new TaskList();
+        }
+    }
+
+    public Lumi() {
+        this.dialogue = new Dialogue();
+        this.storage = new Storage(DEFAULTFILEPATH);
         try {
             this.tasks = new TaskList(storage.load());
         } catch (IOException | LumiException e) {
