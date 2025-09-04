@@ -32,14 +32,10 @@ public class TaskList {
      * Adds a new task to this {@code TaskList}.
      * @param input The string input to be parsed into a {@link Task} object and added to the {@code TaskList}.
      */
-    public void add(String input) {
-        try {
-            Task newTask = Parser.parse(input);
-            this.list.add(newTask);
-            System.out.println("Task added: " + newTask);
-        } catch (LumiException e) {
-            System.out.println(e.getMessage());
-        }
+    public String add(String input) throws LumiException {
+        Task newTask = Parser.parse(input);
+        this.list.add(newTask);
+        return "Task added: " + newTask;
     }
 
     /**
@@ -65,13 +61,15 @@ public class TaskList {
     /**
      * Prints out all tasks in the list.
      */
-    public void printList() {
+    public String printList() {
         if (this.list.isEmpty()) {
-            System.out.println("No items yet!");
+            return "No items yet!";
         } else {
+            StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < this.list.size(); i++) {
-                System.out.println(this.list.get(i));
+                stringBuilder.append(this.list.get(i) + "\n");
             }
+            return stringBuilder.toString();
         }
     }
 
