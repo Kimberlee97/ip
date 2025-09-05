@@ -1,0 +1,25 @@
+.label {
+    -fx-background-color: #f4e1c1;
+    -fx-border-color: transparent;
+    -fx-border-width: 2px;
+    -fx-background-radius: 1em 1em 1em 0;
+    -fx-border-radius: 15;
+    -fx-padding: 8 12 8 12;
+    -fx-text-fill:black;
+}
+
+.reply-label {
+    -fx-background-radius: 1em 1em 1em 0;
+    -fx-border-radius: 15;
+}
+
+#displayPicture {
+
+    /* Change size of image. */
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+
+    /* Rotate image clockwise by degrees. */
+    -fx-rotate: 0;
+}
+
