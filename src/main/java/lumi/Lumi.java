@@ -8,16 +8,12 @@ import lumi.tasks.Task;
 import lumi.tasks.TaskList;
 import lumi.ui.Dialogue;
 
-import javafx.application.Platform;
-
-
-
 /**
  * The main controller for the Lumi task manager chatbot.
  * This class facilitates interactions between the user and the chatbot through command-line commands.
  */
 public class Lumi {
-    private static final String DEFAULTFILEPATH = "./data/lumi.txt";
+    private static final String DEFAULT_FILE_PATH = "./data/lumi.txt";
     private Storage storage;
     private Dialogue dialogue;
     private TaskList tasks;
@@ -37,9 +33,13 @@ public class Lumi {
         }
     }
 
+    /**
+     * Instantiates a new {@code Lumi} object.
+     * Sets the text file used to DEFAULT_FILE_PATH, lumi.txt.
+     */
     public Lumi() {
         this.dialogue = new Dialogue();
-        this.storage = new Storage(DEFAULTFILEPATH);
+        this.storage = new Storage(DEFAULT_FILE_PATH);
         try {
             this.tasks = new TaskList(storage.load());
         } catch (IOException | LumiException e) {
@@ -48,6 +48,11 @@ public class Lumi {
         }
     }
 
+    /**
+     * Processes the user's input.
+     * @param input
+     * @return The output string.
+     */
     public String processInput(String input) {
         String output = "";
         if (input.trim().isEmpty()) {
@@ -107,9 +112,9 @@ public class Lumi {
     }
 
     /**
-     * Temporary
+     * Calls processInput(input).
      * @param input
-     * @return
+     * @return The output string.
      */
     public String getResponse(String input) {
         return processInput(input);

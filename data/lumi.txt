@@ -1,6 +1,4 @@
-[D]|[X]| homework |By: 12 10 2005 15:10
-[E]|[ ]| party |From: 11 12 2005 12:10|To: 15 10 2006 01:00
-[T]|[ ]| homework
-[T]|[ ]| schoolwork
-[E]|[ ]| party |From: 11 12 2005 11:10|To: 16 10 2006 01:00
-[T]|[ ]| work
+[T]|[ ]| CS2100 lectures
+[T]|[ ]| CS2101 presentation
+[T]|[ ]| revision
+[E]|[ ]| medTech |From: 05 09 2025 04:30|To: 05 09 2025 05:30
