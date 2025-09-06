@@ -1,4 +1,6 @@
-[T]|[ ]| CS2100 lectures
-[T]|[ ]| CS2101 presentation
-[T]|[ ]| revision
-[E]|[ ]| medTech |From: 05 09 2025 04:30|To: 05 09 2025 05:30
+[T][ ]  CS2100 lectures
+[T][ ]  CS2101 presentation
+[T][ ]  revision
+[E][X]  medTech |From: 05 09 2025 04:30|To: 05 09 2025 05:30
+[T][ ]  SEP research
+[T][ ]  medTech research

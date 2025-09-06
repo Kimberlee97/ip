@@ -67,7 +67,7 @@ public class TaskList {
         } else {
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < this.list.size(); i++) {
-                stringBuilder.append(this.list.get(i) + "\n");
+                stringBuilder.append((i + 1) + ". " + this.list.get(i) + "\n");
             }
             return stringBuilder.toString();
         }

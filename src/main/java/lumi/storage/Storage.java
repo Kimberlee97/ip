@@ -73,10 +73,10 @@ public class Storage {
      */
     private static Task convertStringToTask(String string) throws LumiException {
         try {
-            String[] taskParts = string.split("\\| |\\|", 3);
-            String type = taskParts[0];
-            String status = taskParts[1];
-            String desc = taskParts[2];
+            String[] taskParts = string.split("[\\[\\]]+");
+            String type = "[" + taskParts[1] + "]";
+            String status = "[" + taskParts[2] + "]";
+            String desc = taskParts[3];
             String typeInput = "";
             boolean isDone = false;
             switch (type) {
