@@ -56,6 +56,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return this.taskType.toString() + (isDone ? DONE : UNDONE);
+        return this.taskType.toString() + (isDone ? DONE : UNDONE) + " ";
     }
 }
