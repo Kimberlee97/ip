@@ -55,7 +55,6 @@ public class Lumi {
      */
     public String processInput(String input) {
         String output = "";
-      
         assert !input.trim().isEmpty() : "Input should not be empty";
         String[] parts = input.split(" ", 2);
         String command = parts[0];
@@ -79,7 +78,6 @@ public class Lumi {
                     }
                     int index = Integer.parseInt(parts[1]) - 1;
                     assert (index > 0) && (index <= this.tasks.getList().size()) : "Your index is invalid";
-                  
                     Task task = this.tasks.getList().get(index);
                     Task updatedTask;
                     if (command.equals("unmark")) {
