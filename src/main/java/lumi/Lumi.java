@@ -67,6 +67,7 @@ public class Lumi {
                 } catch (IOException e) {
                     throw new LumiException(e.getMessage());
                 }
+                output = this.dialogue.sendGoodbye();
                 break;
             case "list":
                 output = this.tasks.printList();
@@ -85,7 +86,7 @@ public class Lumi {
                     } else {
                         updatedTask = task.mark();
                     }
-                    output = dialogue.printUnmarkMessage(updatedTask);
+                    output = this.dialogue.printUnmarkMessage(updatedTask);
                 } catch (IndexOutOfBoundsException e) {
                     throw new LumiException("Please add a valid task number");
                 } catch (NumberFormatException e) {
@@ -95,10 +96,16 @@ public class Lumi {
             case "find":
                 String keyword = parts[1].trim();
                 assert !keyword.isEmpty() : "The keyword should not be empty";
-                this.tasks.find(keyword);
+                output = this.tasks.find(keyword);
                 break;
             case "todo", "event", "deadline":
                 output = this.tasks.add(input);
+                break;
+            case "delete":
+                String index = parts[1].trim();
+                assert !index.isEmpty() : "The index should not be empty";
+                Task task = this.tasks.delete(index);
+                output = this.dialogue.printDeleteMessage(task);
                 break;
             default:
                 throw new LumiException("Sorry! I'm not sure what you mean ><");
