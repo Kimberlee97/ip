@@ -22,7 +22,13 @@ public class Deadline extends Task {
     public Deadline(String desc) throws LumiException {
         super(TaskType.DEADLINE);
         String[] deadlineParts = desc.split("/by |\\|By: ");
-        if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty() || deadlineParts[1].trim().isEmpty()) {
+        boolean hasValidLength = deadlineParts.length >= 2;
+        assert hasValidLength : "Please add the full details!";
+
+        boolean hasInvalidDescription = deadlineParts[0].trim().isEmpty();
+        boolean hasInvalidDeadline = deadlineParts[1].trim().isEmpty();
+
+        if (hasInvalidDeadline || hasInvalidDescription) {
             throw new LumiException("Please enter a deadline task "
                     + "in the format: deadline <task> /by <deadline>");
         } else {

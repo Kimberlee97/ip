@@ -45,7 +45,7 @@ public class TaskList {
      * @throws LumiException If the {@link Task} could not be deleted.
      */
     public Task delete(String i) throws LumiException {
-        Task task = null;
+        Task task;
         try {
             int index = Integer.parseInt(i) - 1;
             task = list.get(index);

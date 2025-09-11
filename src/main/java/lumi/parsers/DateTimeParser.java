@@ -29,7 +29,7 @@ public class DateTimeParser {
             try {
                 return LocalDateTime.parse(dateTime.trim(), format);
             } catch (DateTimeParseException ignored) {
-                // continue
+                // Failed to parse with this format, try another one
             }
         }
         throw new DateTimeParseException("Please enter a date in the correct format", dateTime, 0);

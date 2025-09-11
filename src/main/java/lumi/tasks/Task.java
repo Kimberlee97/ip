@@ -24,10 +24,6 @@ public class Task {
 
     }
 
-    public boolean getIsDone() {
-        return this.isDone;
-    }
-
     /**
      * Marks the current {@code Task} object as done.
      * @return The {@code Task} instance.

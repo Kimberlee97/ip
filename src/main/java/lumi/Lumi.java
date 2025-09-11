@@ -58,52 +58,53 @@ public class Lumi {
         if (input.trim().isEmpty()) {
             return output;
         }
+        String[] parts = input.split(" ", 2);
+        String command = parts[0];
 
         try {
-            if (input.equals("bye")) {
+            switch (command) {
+            case "bye":
                 try {
                     this.storage.updateFile();
                 } catch (IOException e) {
                     throw new LumiException(e.getMessage());
                 }
-                return this.dialogue.sendGoodbye();
-            } else if (input.equals("list")) {
-                return this.tasks.printList();
-            } else if (input.startsWith("unmark") || input.startsWith("mark")) {
+                break;
+            case "list":
+                output = this.tasks.printList();
+                break;
+            case "unmark", "mark":
                 try {
-                    String[] parts = input.split(" ");
-                    if (parts.length < 2) {
-                        throw new LumiException("Please provide a task number e.g. mark 1");
+                    if (parts[1].isEmpty()) {
+                        throw new LumiException("Please provide a task number");
                     }
                     int index = Integer.parseInt(parts[1]) - 1;
-                    if (parts[0].equals("unmark")) {
-                        Task task = this.tasks.getList().get(index).unmark();
-                        return dialogue.printUnmarkMessage(task);
+                    Task task = this.tasks.getList().get(index);
+                    Task updatedTask;
+                    if (command.equals("unmark")) {
+                        updatedTask = task.unmark();
                     } else {
-                        Task task = this.tasks.getList().get(index).mark();
-                        return this.dialogue.printMarkMessage(task);
+                        updatedTask = task.mark();
                     }
+                    output = dialogue.printUnmarkMessage(updatedTask);
                 } catch (IndexOutOfBoundsException e) {
-                    throw new LumiException("Please enter a valid task number");
+                    throw new LumiException("Please add a valid task number");
                 } catch (NumberFormatException e) {
-                    throw new LumiException("Please enter a number after 'mark'/'unmark'");
+                    throw new LumiException("Please enter a number after mark / unmark");
                 }
-            } else if (input.startsWith("delete")) {
-                String[] parts = input.split(" ");
-                if (parts.length < 2) {
-                    throw new LumiException("Please add the task number!");
-                }
-                Task task = this.tasks.delete(parts[1]);
-                return this.dialogue.printDeleteMessage(task);
-            } else if (input.startsWith("find")) {
-                String[] parts = input.split("\\s+");
-                if (parts.length != 2) {
-                    throw new LumiException("Please add exactly one keyword!");
-                }
+                break;
+            case "find":
                 String keyword = parts[1].trim();
+                if (keyword.isEmpty()) {
+                    throw new LumiException("Please add one keyword!");
+                }
                 this.tasks.find(keyword);
-            } else {
-                return this.tasks.add(input);
+                break;
+            case "todo", "event", "deadline":
+                output = this.tasks.add(input);
+                break;
+            default:
+                throw new LumiException("Sorry! I'm not sure what you mean ><");
             }
         } catch (LumiException e) {
             return e.getMessage();
