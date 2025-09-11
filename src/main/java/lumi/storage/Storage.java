@@ -77,8 +77,8 @@ public class Storage {
             String type = "[" + taskParts[1] + "]";
             String status = "[" + taskParts[2] + "]";
             String desc = taskParts[3];
-            String typeInput = "";
-            boolean isDone = false;
+            String typeInput;
+            boolean isDone;
             switch (type) {
             case "[T]":
                 typeInput = "todo";
