@@ -3,7 +3,5 @@
 [T][ ] SEP research
 [T][ ] medTech research
 [T][X] CS2100 tutorial
-[T][X] is1108 stb
 [T][X] CS2100 lab sheet
-[T][ ] 2100 assignment
 [T][X] CS2103T IP
