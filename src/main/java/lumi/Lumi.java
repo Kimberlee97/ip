@@ -75,6 +75,7 @@ public class Lumi {
                         throw new LumiException("Please provide a task number e.g. mark 1");
                     }
                     int index = Integer.parseInt(parts[1]) - 1;
+                    assert (index > 0) && (index <= this.tasks.getList().size()) : "Your index is invalid";
                     if (parts[0].equals("unmark")) {
                         Task task = this.tasks.getList().get(index).unmark();
                         return dialogue.printUnmarkMessage(task);

@@ -21,6 +21,7 @@ public class Deadline extends Task {
      */
     public Deadline(String desc) throws LumiException {
         super(TaskType.DEADLINE);
+        assert !desc.trim().isEmpty() : "The task description should not be empty";
         String[] deadlineParts = desc.split("/by |\\|By: ");
         if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty() || deadlineParts[1].trim().isEmpty()) {
             throw new LumiException("Please enter a deadline task "
