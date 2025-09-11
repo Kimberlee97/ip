@@ -18,6 +18,7 @@ public class TaskList {
      * @param taskList The list of tasks to initialize with.
      */
     public TaskList(List<Task> taskList) {
+        assert taskList != null : "Given task list should not be null";
         this.list = taskList;
     }
 
@@ -33,6 +34,7 @@ public class TaskList {
      * @param input The string input to be parsed into a {@link Task} object and added to the {@code TaskList}.
      */
     public String add(String input) throws LumiException {
+        assert !input.trim().isEmpty() : "The input should not be empty";
         Task newTask = Parser.parse(input);
         this.list.add(newTask);
         return "Task added: " + newTask;
@@ -45,7 +47,10 @@ public class TaskList {
      * @throws LumiException If the {@link Task} could not be deleted.
      */
     public Task delete(String i) throws LumiException {
+        assert !i.trim().isEmpty() : "The index given should not be empty";
+      
         Task task;
+      
         try {
             int index = Integer.parseInt(i) - 1;
             task = list.get(index);
@@ -81,17 +86,21 @@ public class TaskList {
      * Prints the tasks that contain the given keyword.
      * @param keyword
      */
-    public void find(String keyword) {
+    public String find(String keyword) {
+        assert !keyword.trim().isEmpty() : "The keyword should not be empty";
         String lowercaseKeyword = keyword.toLowerCase();
         int count = 0;
+        StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < this.list.size(); i++) {
             String taskStatement = this.list.get(i).toString();
             if (taskStatement.toLowerCase().contains(lowercaseKeyword)) {
-                System.out.println(taskStatement);
+                stringBuilder.append(taskStatement + "\n");
                 count += 1;
             }
         }
-        String conclusion = (count > 0) ? "Here's the tasks I've found ><" : "I couldn't find any matching tasks :<";
-        System.out.println(conclusion);
+        stringBuilder.insert(0, (count > 0)
+                ? "Here's the tasks I've found >< \n"
+                : "I couldn't find any matching tasks :<");
+        return stringBuilder.toString();
     }
 }

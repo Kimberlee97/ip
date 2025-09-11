@@ -55,9 +55,8 @@ public class Lumi {
      */
     public String processInput(String input) {
         String output = "";
-        if (input.trim().isEmpty()) {
-            return output;
-        }
+      
+        assert !input.trim().isEmpty() : "Input should not be empty";
         String[] parts = input.split(" ", 2);
         String command = parts[0];
 
@@ -79,6 +78,8 @@ public class Lumi {
                         throw new LumiException("Please provide a task number");
                     }
                     int index = Integer.parseInt(parts[1]) - 1;
+                    assert (index > 0) && (index <= this.tasks.getList().size()) : "Your index is invalid";
+                  
                     Task task = this.tasks.getList().get(index);
                     Task updatedTask;
                     if (command.equals("unmark")) {
@@ -95,9 +96,7 @@ public class Lumi {
                 break;
             case "find":
                 String keyword = parts[1].trim();
-                if (keyword.isEmpty()) {
-                    throw new LumiException("Please add one keyword!");
-                }
+                assert !keyword.isEmpty() : "The keyword should not be empty";
                 this.tasks.find(keyword);
                 break;
             case "todo", "event", "deadline":

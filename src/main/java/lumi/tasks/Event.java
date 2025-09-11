@@ -22,6 +22,7 @@ public class Event extends Task {
      */
     public Event(String desc) throws LumiException {
         super(TaskType.EVENT);
+        assert !desc.trim().isEmpty() : "The task description should not be empty";
         String[] eventParts = desc.split("/from|/to|\\|From: |\\|To: ");
         boolean hasValidLength = eventParts.length >= 3;
         assert hasValidLength : "Please enter the full description!";
@@ -37,7 +38,7 @@ public class Event extends Task {
             try {
                 LocalDateTime from = DateTimeParser.parseDate(eventParts[1]);
                 LocalDateTime to = DateTimeParser.parseDate(eventParts[2]);
-                this.desc = eventParts[0] + "|From: " + DateTimeParser.format(from) + "|To: "
+                this.desc = eventParts[0].trim() + "|From: " + DateTimeParser.format(from) + "|To: "
                         + DateTimeParser.format(to);
             } catch (DateTimeParseException e) {
                 throw new LumiException(e.getMessage());
@@ -47,6 +48,6 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return super.toString() + " " + this.desc;
+        return super.toString() + this.desc;
     }
 }
