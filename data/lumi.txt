@@ -1,6 +1,10 @@
-[T][ ]  CS2100 lectures
-[T][ ]  CS2101 presentation
-[T][ ]  revision
-[E][X]  medTech |From: 05 09 2025 04:30|To: 05 09 2025 05:30
-[T][ ]  SEP research
-[T][ ]  medTech research
+[T][X] CS2101 presentation
+[T][ ] revision
+[T][ ] SEP research
+[T][ ] medTech research
+[T][X] CS2100 tutorial
+[T][X] is1108 stb
+[T][X] CS2100 lab sheet
+[T][ ] 2100 assignment
+[T][ ] CS2103T IP
+[E][ ] IS1108 meeting|From: 10 09 2025 17:00|To: 10 09 2025 18:00

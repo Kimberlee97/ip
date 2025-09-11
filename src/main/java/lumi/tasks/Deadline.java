@@ -21,6 +21,7 @@ public class Deadline extends Task {
      */
     public Deadline(String desc) throws LumiException {
         super(TaskType.DEADLINE);
+        assert !desc.trim().isEmpty() : "The task description should not be empty";
         String[] deadlineParts = desc.split("/by |\\|By: ");
         if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty() || deadlineParts[1].trim().isEmpty()) {
             throw new LumiException("Please enter a deadline task "
@@ -28,7 +29,7 @@ public class Deadline extends Task {
         } else {
             try {
                 LocalDateTime dateTime = DateTimeParser.parseDate(deadlineParts[1]);
-                this.desc = deadlineParts[0] + "|By: " + DateTimeParser.format(dateTime);
+                this.desc = deadlineParts[0].trim() + "|By: " + DateTimeParser.format(dateTime);
             } catch (DateTimeParseException e) {
                 throw new LumiException(e.getMessage());
             }
@@ -37,6 +38,6 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return super.toString() + " " + desc;
+        return super.toString() + desc;
     }
 }
