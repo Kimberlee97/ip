@@ -107,6 +107,9 @@ public class Lumi {
                 Task task = this.tasks.delete(index);
                 output = this.dialogue.printDeleteMessage(task);
                 break;
+            case "help":
+                output = this.dialogue.showHelpDialogue();
+                break;
             default:
                 throw new LumiException("Sorry! I'm not sure what you mean ><");
             }
