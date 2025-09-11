@@ -24,8 +24,14 @@ public class Event extends Task {
         super(TaskType.EVENT);
         assert !desc.trim().isEmpty() : "The task description should not be empty";
         String[] eventParts = desc.split("/from|/to|\\|From: |\\|To: ");
-        if (eventParts.length < 3 || eventParts[0].trim().isEmpty() || eventParts[1].trim().isEmpty()
-                || eventParts[2].trim().isEmpty()) {
+        boolean hasValidLength = eventParts.length >= 3;
+        assert hasValidLength : "Please enter the full description!";
+
+        boolean hasInvalidDesc = eventParts[0].trim().isEmpty();
+        boolean hasInvalidFromDetails = eventParts[1].trim().isEmpty();
+        boolean hasInvalidEndDetails = eventParts[2].trim().isEmpty();
+
+        if (hasInvalidDesc || hasInvalidEndDetails || hasInvalidFromDetails) {
             throw new LumiException("Please enter an event task in the "
                     + "format: event <task> /from <date/time> /to <date/time>");
         } else {

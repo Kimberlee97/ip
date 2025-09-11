@@ -48,7 +48,9 @@ public class TaskList {
      */
     public Task delete(String i) throws LumiException {
         assert !i.trim().isEmpty() : "The index given should not be empty";
-        Task task = null;
+      
+        Task task;
+      
         try {
             int index = Integer.parseInt(i) - 1;
             task = list.get(index);
