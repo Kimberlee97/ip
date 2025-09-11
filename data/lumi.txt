@@ -1,4 +1,4 @@
-[T][ ] CS2101 presentation
+[T][X] CS2101 presentation
 [T][ ] revision
 [T][ ] SEP research
 [T][ ] medTech research
@@ -8,4 +8,3 @@
 [T][ ] 2100 assignment
 [T][ ] CS2103T IP
 [E][ ] IS1108 meeting|From: 10 09 2025 17:00|To: 10 09 2025 18:00
-

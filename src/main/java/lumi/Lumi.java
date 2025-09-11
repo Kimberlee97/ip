@@ -55,9 +55,8 @@ public class Lumi {
      */
     public String processInput(String input) {
         String output = "";
-        if (input.trim().isEmpty()) {
-            return output;
-        }
+
+        assert !input.trim().isEmpty() : "Input should not be empty";
 
         try {
             if (input.equals("bye")) {
@@ -101,9 +100,10 @@ public class Lumi {
                     throw new LumiException("Please add exactly one keyword!");
                 }
                 String keyword = parts[1].trim();
-                this.tasks.find(keyword);
+                assert !keyword.isEmpty() : "The keyword should not be empty";
+                return this.tasks.find(keyword);
             } else {
-                return this.tasks.add(input);
+                output = this.tasks.add(input);
             }
         } catch (LumiException e) {
             return e.getMessage();
