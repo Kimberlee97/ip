@@ -67,7 +67,7 @@ public class Dialogue {
      */
     public String showHelpDialogue() {
         String greet = "₊✩‧₊˚౨ৎ˚₊✩‧₊ Lumi is here to help ₊✩‧₊˚౨ৎ˚₊✩‧₊\nHere are our list of commands:\n";
-        String listHeader = "\n⋆˚✿˖° List-Viewing Commands ⋆˚✿˖°\n\n";
+        String listHeader = "\n⋆˚✿˖° List-Related Commands ⋆˚✿˖°\n\n";
         String list = "list: prints out the task list in the format <index>.[<task type>][<status>] <task description>"
                 + "\n- index: refers to the task's index in the list (from earliest date added to latest)\n"
                 + "- task type: refers to the task's type e.g. T for todo, E for event, D for deadline\n"

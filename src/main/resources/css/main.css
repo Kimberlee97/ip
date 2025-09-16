@@ -30,11 +30,11 @@
 
 .scroll-bar {
     -fx-font-size: 10px;  /* Change width of scroll bar. */
-    -fx-background-color: main-color;
+    -fx-background-color: #fceabb;
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #ffe0eb;
+    -fx-background-color: #ff85c1;
     -fx-background-radius: 1em;
 }
 
