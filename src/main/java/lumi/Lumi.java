@@ -62,11 +62,6 @@ public class Lumi {
         try {
             switch (command) {
             case "bye":
-                try {
-                    this.storage.updateFile();
-                } catch (IOException e) {
-                    throw new LumiException(e.getMessage());
-                }
                 output = this.dialogue.sendGoodbye();
                 break;
             case "list":
@@ -113,6 +108,7 @@ public class Lumi {
             default:
                 throw new LumiException("Sorry! I'm not sure what you mean ><");
             }
+            this.storage.updateFile();
         } catch (LumiException e) {
             return e.getMessage();
         }
