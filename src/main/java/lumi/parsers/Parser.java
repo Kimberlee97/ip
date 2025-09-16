@@ -7,7 +7,7 @@ import lumi.tasks.Task;
 import lumi.tasks.Todo;
 
 /**
- * Utility class for parsing raw user input into {@Link Task} objects.
+ * Utility class for parsing raw user input into {@link Task} objects.
  * The {@code Parser} analyzes the command string and determines the correct task type to instantiate.
  * If no suitable task types are found, a LumiException will be thrown.
  */

@@ -23,18 +23,18 @@ public class Event extends Task {
      */
     public Event(String desc) throws LumiException {
         super(TaskType.EVENT);
+
+        assert !desc.trim().isEmpty() : "The task description should not be empty";
         if (desc.trim().isEmpty()) {
             throw new LumiException("The task description should not be empty");
         }
 
         String[] eventParts = desc.split("/from|/to|\\|From: |\\|To: ");
         boolean hasValidLength = eventParts.length >= 3;
+        assert hasValidLength : "Please enter the full description!";
         if (!hasValidLength) {
             throw new LumiException("Please enter the full description!");
         }
-
-        assert !desc.trim().isEmpty() : "The task description should not be empty";
-        assert hasValidLength : "Please enter the full description!";
 
         boolean hasInvalidDesc = eventParts[0].trim().isEmpty();
         boolean hasInvalidFromDetails = eventParts[1].trim().isEmpty();

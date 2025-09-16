@@ -58,8 +58,8 @@ public class Dialogue {
      * Returns an error message for a failed load.
      * @param e The exception thrown from the failed load attempt.
      */
-    public String showLoadingError(Exception e) {
-        return "Unable to load your file: " + e.getMessage() + "\n" + "Starting with a new list...";
+    public void showLoadingError(Exception e) {
+        System.out.println("Unable to load your file: " + e.getMessage() + "\n" + "Starting with a new list...");
     }
 
     /**

@@ -73,15 +73,16 @@ public class Lumi {
                         throw new LumiException("Please provide a task number");
                     }
                     int index = Integer.parseInt(parts[1]) - 1;
-                    assert (index > 0) && (index <= this.tasks.getList().size()) : "Your index is invalid";
+                    assert (index >= 0) && (index <= this.tasks.getList().size()) : "Your index is invalid";
                     Task task = this.tasks.getList().get(index);
                     Task updatedTask;
                     if (command.equals("unmark")) {
                         updatedTask = task.unmark();
+                        output = this.dialogue.printUnmarkMessage(updatedTask);
                     } else {
                         updatedTask = task.mark();
+                        output = this.dialogue.printMarkMessage(updatedTask);
                     }
-                    output = this.dialogue.printUnmarkMessage(updatedTask);
                 } catch (IndexOutOfBoundsException e) {
                     throw new LumiException("Please add a valid task number");
                 } catch (NumberFormatException e) {
@@ -89,6 +90,9 @@ public class Lumi {
                 }
                 break;
             case "find":
+                if (parts.length < 2) {
+                    throw new LumiException("Please provide all the necessary details");
+                }
                 String keyword = parts[1].trim();
                 assert !keyword.isEmpty() : "The keyword should not be empty";
                 output = this.tasks.find(keyword);
@@ -97,6 +101,9 @@ public class Lumi {
                 output = this.tasks.add(input);
                 break;
             case "delete":
+                if (parts.length < 2) {
+                    throw new LumiException("Please provide all the necessary details");
+                }
                 String index = parts[1].trim();
                 assert !index.isEmpty() : "The index should not be empty";
                 Task task = this.tasks.delete(index);
