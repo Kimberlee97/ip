@@ -1,8 +1,10 @@
 package lumi.tasks;
 
+import lumi.exceptions.LumiException;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for the {@link TaskList} class.
@@ -10,30 +12,71 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class TaskListTest {
     /**
-     * Tests that valid {@link Todo}, {@link Deadline} and {@link Event} tasks are added to the {@link TaskList}.
+     * Tests that valid {@link Todo} is added to {@link TaskList}.
      */
     @Test
-    public void addTaskTest() {
+    public void addTodoTest() {
         TaskList tasks = new TaskList();
-        tasks.add("todo homework"); // tests if todo task has been added
-        assertEquals(1, tasks.getList().size());
-        tasks.add("deadline test /by 12/10/2025 16:00"); // tests if deadline task has been added
-        assertEquals(2, tasks.getList().size());
-        tasks.add("event party /from 12/01/2025 15:00 /to 13/01/2025 15:00"); // tests if event task has been added
-        assertEquals(3, tasks.getList().size());
+        String result = assertDoesNotThrow(() -> tasks.add("todo homework"));
+        assertEquals("Task added: [T][ ] homework", result);
+        assertInstanceOf(Todo.class, tasks.getList().get(0));
     }
 
     /**
-     * Tests if invalid commands will not be added.
+     * Tests that valid {@link Event} is added to {@link TaskList}.
      */
     @Test
-    public void invalidTaskTest() {
+    public void addEventTest() {
         TaskList tasks = new TaskList();
-        tasks.add("todo   "); // tests invalid task
-        assertEquals(0, tasks.getList().size());
-        tasks.add("deadline test /by 12/100/2005 17:00"); // tests invalid date
-        assertEquals(0, tasks.getList().size());
-        tasks.add(" "); // test empty input
+        String result = assertDoesNotThrow(() -> tasks.add("event CS2100 Lab "
+                + "/from 15/10/2025 16:00 /to 15/10/2025 18:00"));
+        assertEquals("Task added: [E][ ] CS2100 Lab|From: 15 10 2025 16:00|To: 15 10 2025 18:00", result);
+        assertInstanceOf(Event.class, tasks.getList().get(0));
+    }
+
+    /**
+     * Tests that valid {@link Event} is added to {@link TaskList}.
+     */
+    @Test
+    public void addDeadlineTest() {
+        TaskList tasks = new TaskList();
+        String result = assertDoesNotThrow(() -> tasks.add("deadline CS2100 project "
+                + "/by 15/10/2025 16:00"));
+        assertEquals("Task added: [D][ ] CS2100 project|By: 15 10 2025 16:00", result);
+        assertInstanceOf(Deadline.class, tasks.getList().get(0));
+    }
+
+    /**
+     * Tests that invalid {@link Todo} throws LumiException and is not added to {@link TaskList}.
+     */
+    @Test
+    public void addInvalidTodoTest() {
+        TaskList tasks = new TaskList();
+        assertThrows(LumiException.class, () -> tasks.add("todo      "),
+                "Please add a todo task in the format: todo <task> (task should not be empty :> )");
         assertEquals(0, tasks.getList().size());
     }
+
+    /**
+     * Tests that invalid {@link Event} throws LumiException and is not added to {@link TaskList}.
+     */
+    @Test
+    public void addInvalidEventTest() {
+        TaskList tasks = new TaskList();
+        assertThrows(LumiException.class, () -> tasks.add("event /from 12pm /to 5pm"),
+                "Please enter a date in the correct format");
+        assertEquals(0, tasks.getList().size());
+    }
+
+    /**
+     * Tests that invalid {@link Deadline} throws LumiException and is not added to {@link TaskList}.
+     */
+    @Test
+    public void addInvalidDeadlineTest() {
+        TaskList tasks = new TaskList();
+        assertThrows(LumiException.class, () -> tasks.add("deadline /from 12pm /to 5pm"),
+                "Please add the full details!");
+        assertEquals(0, tasks.getList().size());
+    }
+
 }

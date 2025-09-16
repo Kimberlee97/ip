@@ -2,7 +2,7 @@ package lumi.storage;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import lumi.exceptions.LumiException;
 
@@ -19,6 +19,6 @@ public class StorageTest {
     @Test
     public void loadTest() {
         Storage storage = new Storage("./data/test.txt");
-        assertThrows(LumiException.class, storage::load);
+        assertDoesNotThrow(storage::load);
     }
 }
