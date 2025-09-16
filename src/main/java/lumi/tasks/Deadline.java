@@ -23,6 +23,7 @@ public class Deadline extends Task {
     public Deadline(String desc) throws LumiException {
         super(TaskType.DEADLINE);
 
+        assert !desc.trim().isEmpty() : "The task description is empty";
         if (desc.trim().isEmpty()) {
             throw new LumiException("The task description should not be empty");
         }
@@ -30,12 +31,10 @@ public class Deadline extends Task {
         String[] deadlineParts = desc.split("/by |\\|By: ");
         boolean hasValidLength = deadlineParts.length >= 2;
 
+        assert hasValidLength : "Insufficient details added";
         if (!hasValidLength) {
             throw new LumiException("Please add the full details!");
         }
-
-        assert !desc.trim().isEmpty() : "The task description is empty";
-        assert hasValidLength : "Insufficient details added";
 
         boolean hasInvalidDescription = deadlineParts[0].trim().isEmpty();
         boolean hasInvalidDeadline = deadlineParts[1].trim().isEmpty();

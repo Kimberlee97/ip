@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import lumi.Lumi;
 
 /**
- * A GUI for Duke using FXML.
+ * A GUI for Lumi using FXML.
  */
 public class Main extends Application {
 
