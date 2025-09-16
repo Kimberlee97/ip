@@ -85,7 +85,6 @@ public class TaskList {
      * @param keyword
      */
     public String find(String keyword) {
-        assert !keyword.trim().isEmpty() : "The keyword should not be empty";
         String lowercaseKeyword = keyword.toLowerCase();
         int count = 0;
         StringBuilder stringBuilder = new StringBuilder();
