@@ -1,7 +1,1 @@
-[T][X] CS2101 presentation
-[T][ ] revision
 [T][ ] SEP research
-[T][ ] medTech research
-[T][X] CS2100 tutorial
-[T][X] CS2100 lab sheet
-[T][X] CS2103T IP

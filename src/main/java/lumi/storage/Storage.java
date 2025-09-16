@@ -119,7 +119,7 @@ public class Storage {
      * @throws IOException If the file cannot be opened or written to.
      * @throws LumiException If the file cannot be updated.
      */
-    public void updateFile() throws IOException, LumiException {
+    public void updateFile() throws LumiException {
         try {
             FileWriter fw = new FileWriter(this.filePath);
             for (Task task : this.list) {
