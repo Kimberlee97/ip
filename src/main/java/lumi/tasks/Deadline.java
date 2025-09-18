@@ -3,7 +3,6 @@ package lumi.tasks;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
-import lumi.Lumi;
 import lumi.exceptions.LumiException;
 import lumi.parsers.DateTimeParser;
 
@@ -22,33 +21,80 @@ public class Deadline extends Task {
      */
     public Deadline(String desc) throws LumiException {
         super(TaskType.DEADLINE);
+        this.desc = parseAndFormat(desc);
+    }
 
-        assert !desc.trim().isEmpty() : "The task description is empty";
-        if (desc.trim().isEmpty()) {
+    /**
+     * Validates and parses the input string into a formatted deadline description.
+     *
+     * @param desc User input containing description and deadline.
+     * @return A formatted description string with the parsed deadline.
+     * @throws LumiException If input is invalid or the deadline cannot be parsed.
+     */
+    private String parseAndFormat(String desc) throws LumiException {
+        validateNotEmpty(desc);
+
+        String[] parts = splitInput(desc);
+        validateParts(parts);
+
+        return formatDeadline(parts[0], parts[1]);
+    }
+
+    /**
+     * Ensures the task description is not null or empty.
+     *
+     * @param desc The input string to check.
+     * @throws LumiException If the description is empty or null.
+     */
+    private void validateNotEmpty(String desc) throws LumiException {
+        if (desc == null || desc.trim().isEmpty()) {
             throw new LumiException("The task description should not be empty");
         }
+    }
 
-        String[] deadlineParts = desc.split("/by |\\|By: ");
-        boolean hasValidLength = deadlineParts.length >= 2;
-
-        assert hasValidLength : "Insufficient details added";
-        if (!hasValidLength) {
+    /**
+     * Splits the user input into description and deadline parts.
+     *
+     * @param desc The input string containing task details.
+     * @return A string array with two parts: description and deadline.
+     * @throws LumiException If the input cannot be split into valid parts.
+     */
+    private String[] splitInput(String desc) throws LumiException {
+        String[] parts = desc.split("/by |\\|By: ");
+        if (parts.length < 2) {
             throw new LumiException("Please add the full details!");
         }
+        return parts;
+    }
 
-        boolean hasInvalidDescription = deadlineParts[0].trim().isEmpty();
-        boolean hasInvalidDeadline = deadlineParts[1].trim().isEmpty();
+    /**
+     * Validates that both description and deadline parts are non-empty.
+     *
+     * @param parts The string array containing description and deadline.
+     * @throws LumiException If either part is empty.
+     */
+    private void validateParts(String[] parts) throws LumiException {
+        if (parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+            throw new LumiException(
+                    "Please enter a deadline task in the format: deadline <task> /by <deadline>"
+            );
+        }
+    }
 
-        if (hasInvalidDeadline || hasInvalidDescription) {
-            throw new LumiException("Please enter a deadline task "
-                    + "in the format: deadline <task> /by <deadline>");
-        } else {
-            try {
-                LocalDateTime dateTime = DateTimeParser.parseDate(deadlineParts[1]);
-                this.desc = deadlineParts[0].trim() + "|By: " + DateTimeParser.format(dateTime);
-            } catch (DateTimeParseException e) {
-                throw new LumiException(e.getMessage());
-            }
+    /**
+     * Parses and formats the deadline part into a standardized format.
+     *
+     * @param task The task description.
+     * @param deadline The deadline string to be parsed.
+     * @return A formatted task string including the deadline.
+     * @throws LumiException If the deadline cannot be parsed into a {@link LocalDateTime}.
+     */
+    private String formatDeadline(String task, String deadline) throws LumiException {
+        try {
+            LocalDateTime dateTime = DateTimeParser.parseDate(deadline.trim());
+            return task.trim() + "|By: " + DateTimeParser.format(dateTime);
+        } catch (DateTimeParseException e) {
+            throw new LumiException(e.getMessage());
         }
     }
 

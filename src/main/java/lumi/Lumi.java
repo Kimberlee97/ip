@@ -68,46 +68,16 @@ public class Lumi {
                 output = this.tasks.printList();
                 break;
             case "unmark", "mark":
-                try {
-                    if (parts[1].isEmpty()) {
-                        throw new LumiException("Please provide a task number");
-                    }
-                    int index = Integer.parseInt(parts[1]) - 1;
-                    assert (index >= 0) && (index <= this.tasks.getList().size()) : "Your index is invalid";
-                    Task task = this.tasks.getList().get(index);
-                    Task updatedTask;
-                    if (command.equals("unmark")) {
-                        updatedTask = task.unmark();
-                        output = this.dialogue.printUnmarkMessage(updatedTask);
-                    } else {
-                        updatedTask = task.mark();
-                        output = this.dialogue.printMarkMessage(updatedTask);
-                    }
-                } catch (IndexOutOfBoundsException e) {
-                    throw new LumiException("Please add a valid task number");
-                } catch (NumberFormatException e) {
-                    throw new LumiException("Please enter a number after mark / unmark");
-                }
+                output = handleMarkAndUnmark(command, parts[1]);
                 break;
             case "find":
-                if (parts.length < 2) {
-                    throw new LumiException("Please provide all the necessary details");
-                }
-                String keyword = parts[1].trim();
-                assert !keyword.isEmpty() : "The keyword should not be empty";
-                output = this.tasks.find(keyword);
+                output = handleFind(parts);
                 break;
             case "todo", "event", "deadline":
                 output = this.tasks.add(input);
                 break;
             case "delete":
-                if (parts.length < 2) {
-                    throw new LumiException("Please provide all the necessary details");
-                }
-                String index = parts[1].trim();
-                assert !index.isEmpty() : "The index should not be empty";
-                Task task = this.tasks.delete(index);
-                output = this.dialogue.printDeleteMessage(task);
+                output = handleDelete(parts);
                 break;
             case "help":
                 output = this.dialogue.showHelpDialogue();
@@ -118,6 +88,63 @@ public class Lumi {
             this.storage.updateFile();
         } catch (LumiException e) {
             return e.getMessage();
+        }
+        return output;
+    }
+
+    public String handleDelete(String[] input) throws LumiException {
+        String output;
+        if (input.length < 2) {
+            throw new LumiException("Please provide all the necessary details");
+        }
+        String index = input[1].trim();
+        assert !index.isEmpty() : "The index should not be empty";
+        Task task = this.tasks.delete(index);
+        output = this.dialogue.printDeleteMessage(task);
+        return output;
+    }
+
+    /**
+     * Handles find command.
+     * @param input
+     */
+    public String handleFind(String[] input) throws LumiException {
+        String output;
+        if (input.length < 2) {
+            throw new LumiException("Please provide all the necessary details");
+        }
+        String keyword = input[1].trim();
+        assert !keyword.isEmpty() : "The keyword should not be empty";
+        output = this.tasks.find(keyword);
+        return output;
+    }
+
+    /**
+     * Handles mark and unmark tasks.
+     * @param command The mark or unmark command.
+     * @param num The index of the task.
+     */
+    public String handleMarkAndUnmark(String command, String num) throws LumiException {
+        String output;
+        try {
+            if (num.isEmpty()) {
+                throw new LumiException("Please provide a task number");
+            }
+            int index = Integer.parseInt(num) - 1;
+            assert (index >= 0) && (index <= this.tasks.getList().size()) : "Your index is invalid";
+            Task task = this.tasks.getList().get(index);
+            Task updatedTask;
+            if (command.equals("unmark")) {
+                updatedTask = task.unmark();
+                output = this.dialogue.printUnmarkMessage(updatedTask);
+            } else {
+                updatedTask = task.mark();
+                output = this.dialogue.printMarkMessage(updatedTask);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            throw new LumiException("Please add a valid task number");
+        } catch (NumberFormatException e) {
+            throw new LumiException("Please enter a number after mark / unmark");
         }
         return output;
     }
