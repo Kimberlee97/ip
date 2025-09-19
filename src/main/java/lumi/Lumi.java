@@ -2,6 +2,7 @@ package lumi;
 
 import java.io.IOException;
 
+import javafx.application.Platform;
 import lumi.exceptions.LumiException;
 import lumi.storage.Storage;
 import lumi.tasks.Task;
@@ -81,7 +82,9 @@ public class Lumi {
      * @return The farewell message.
      */
     private String handleBye() {
-        return dialogue.sendGoodbye();
+        String message = dialogue.sendGoodbye();
+        Platform.exit();
+        return message;
     }
 
     /**
