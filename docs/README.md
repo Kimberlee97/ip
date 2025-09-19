@@ -1,6 +1,6 @@
 # Lumi User Guide
 
-![Screenshot of the Lumi app](UI.png)
+![Screenshot of the Lumi app](Ui.png)
 
 LUMI (˶ˆᗜˆ˵) is a one-of-a-kind chatbot to help you manage your tasks.
 
