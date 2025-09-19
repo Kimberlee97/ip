@@ -19,17 +19,6 @@ public class Lumi {
     private TaskList tasks;
 
     /**
-     * Creates a {@code Lumi} instance using the given file path for persistence.
-     *
-     * @param filePath path to the text file where tasks are stored
-     */
-    public Lumi(String filePath) {
-        this.dialogue = new Dialogue();
-        this.storage = new Storage(filePath);
-        loadTasksOrInitializeEmpty();
-    }
-
-    /**
      * Creates a {@code Lumi} instance using the default file path.
      */
     public Lumi() {
@@ -40,12 +29,11 @@ public class Lumi {
 
     /**
      * Parses and executes a user command, returning a user-facing message.
-     * <p>
      * Any {@link LumiException} raised during handling is converted into a
      * message and returned to the caller.
      *
-     * @param input raw user input
-     * @return user-facing message describing the effect or error
+     * @param input The raw user input.
+     * @return The user-facing message describing the effect or error.
      */
     public String processInput(String input) {
         try {
@@ -69,20 +57,20 @@ public class Lumi {
     /**
      * Routes a parsed command to its specific handler.
      *
-     * @param command command verb (e.g., {@code "todo"}, {@code "list"})
-     * @param args    remainder of the user input (may be empty)
-     * @return user-facing message
-     * @throws LumiException if the command is invalid or arguments are missing
+     * @param command The command.
+     * @param args The remainder of the user input.
+     * @return The user-facing message.
+     * @throws LumiException If the command is invalid or arguments are missing.
      */
     private String routeCommand(String command, String args) throws LumiException {
         return switch (command) {
             case "bye" -> handleBye();
             case "help" -> handleHelp();
             case "list" -> handleList();
-            case "find" -> handleFind(args);
-            case "todo", "event", "deadline" -> handleAdd(command, args);
             case "delete" -> handleDelete(args);
+            case "find" -> handleFind(args);
             case "mark", "unmark" -> handleMarkUnmark(command, args);
+            case "todo", "event", "deadline" -> handleAdd(command, args);
             default -> throw new LumiException("Sorry! I'm not sure what you mean ><");
         };
     }
@@ -90,7 +78,7 @@ public class Lumi {
     /**
      * Handles the {@code bye} command.
      *
-     * @return farewell message
+     * @return The farewell message.
      */
     private String handleBye() {
         return dialogue.sendGoodbye();
@@ -99,7 +87,7 @@ public class Lumi {
     /**
      * Handles the {@code help} command.
      *
-     * @return help text
+     * @return The help dialogue.
      */
     private String handleHelp() {
         return dialogue.showHelpDialogue();
@@ -108,7 +96,7 @@ public class Lumi {
     /**
      * Handles the {@code list} command.
      *
-     * @return formatted list of tasks or an empty message
+     * @return The formatted list of tasks or an empty message.
      */
     private String handleList() {
         return tasks.printList();
@@ -117,9 +105,9 @@ public class Lumi {
     /**
      * Handles the {@code find} command.
      *
-     * @param args keyword(s) to search for
-     * @return matching tasks, if any
-     * @throws LumiException if {@code args} are missing
+     * @param args The keywords to search for.
+     * @return The matching tasks, if any.
+     * @throws LumiException If {@code args} are missing.
      */
     private String handleFind(String args) throws LumiException {
         ensureArgsProvided(args, "Please provide all the necessary details");
@@ -132,10 +120,10 @@ public class Lumi {
      * Reconstructs the original input so the {@link TaskList} parser
      * can determine the exact task subtype and validate its fields.
      *
-     * @param command the verb (e.g., {@code "todo"})
-     * @param args    the remainder of the user input
-     * @return a confirmation message upon successful add
-     * @throws LumiException if the task cannot be created
+     * @param command The command.
+     * @param args The remainder of the user input.
+     * @return The confirmation message upon successful add.
+     * @throws LumiException If the task cannot be created.
      */
     private String handleAdd(String command, String args) throws LumiException {
         String raw = command + (args.isEmpty() ? "" : " " + args);
@@ -145,9 +133,9 @@ public class Lumi {
     /**
      * Handles the {@code delete} command (1-based index in UI).
      *
-     * @param args user-supplied index
-     * @return a confirmation message upon successful deletion
-     * @throws LumiException if the index is invalid or missing
+     * @param args The user-supplied index.
+     * @return The confirmation message upon successful deletion.
+     * @throws LumiException If the index is invalid or missing.
      */
     private String handleDelete(String args) throws LumiException {
         ensureArgsProvided(args, "Please provide all the necessary details");
@@ -158,10 +146,10 @@ public class Lumi {
     /**
      * Handles the {@code mark}/{@code unmark} commands (1-based index in UI).
      *
-     * @param command either {@code "mark"} or {@code "unmark"}
-     * @param args    user-supplied index
-     * @return a confirmation message
-     * @throws LumiException if the index is invalid or missing
+     * @param command Either {@code "mark"} or {@code "unmark"}.
+     * @param args The user-supplied index.
+     * @return A confirmation message if successful.
+     * @throws LumiException If the index is invalid or missing.
      */
     private String handleMarkUnmark(String command, String args) throws LumiException {
         ensureArgsProvided(args, "Please provide a task number");
@@ -199,9 +187,9 @@ public class Lumi {
     /**
      * Ensures that a command that requires arguments actually received them.
      *
-     * @param args    the argument string (may be empty)
-     * @param message error message to show if missing
-     * @throws LumiException if no arguments were provided
+     * @param args The argument string.
+     * @param message The error message to show if missing.
+     * @throws LumiException If no arguments were provided.
      */
     private void ensureArgsProvided(String args, String message) throws LumiException {
         if (args == null || args.isEmpty()) {
@@ -212,8 +200,8 @@ public class Lumi {
     /**
      * Persists the current state of the task list to disk for mutating commands.
      *
-     * @param command the executed command verb
-     * @throws LumiException if saving fails
+     * @param command The executed command.
+     * @throws LumiException If saving fails.
      */
     private void persistIfChanged(String command) throws LumiException {
         if (command.equals("todo")

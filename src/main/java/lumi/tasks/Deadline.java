@@ -21,6 +21,8 @@ public class Deadline extends Task {
      */
     public Deadline(String desc) throws LumiException {
         super(TaskType.DEADLINE);
+        assert desc != null : "The description must not be null";
+        assert !desc.trim().isEmpty() : "The description must not be empty";
         this.desc = parseAndFormat(desc);
     }
 
@@ -92,6 +94,7 @@ public class Deadline extends Task {
     private String formatDeadline(String task, String deadline) throws LumiException {
         try {
             LocalDateTime dateTime = DateTimeParser.parseDate(deadline.trim());
+            assert dateTime != null : "Date time should not be null";
             return task.trim() + "|By: " + DateTimeParser.format(dateTime);
         } catch (DateTimeParseException e) {
             throw new LumiException(e.getMessage());

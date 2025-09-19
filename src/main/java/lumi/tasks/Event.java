@@ -3,7 +3,6 @@ package lumi.tasks;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
-import lumi.Lumi;
 import lumi.exceptions.LumiException;
 import lumi.parsers.DateTimeParser;
 
@@ -23,35 +22,87 @@ public class Event extends Task {
      */
     public Event(String desc) throws LumiException {
         super(TaskType.EVENT);
+        assert desc != null : "The description must not be null";
+        assert !desc.trim().isEmpty() : "The description must not be empty";
+        this.desc = parseAndFormat(desc);
+    }
 
-        assert !desc.trim().isEmpty() : "The task description should not be empty";
-        if (desc.trim().isEmpty()) {
-            throw new LumiException("The task description should not be empty");
-        }
+    /**
+     * Validates and parses the input string into a formatted event description.
+     *
+     * @param desc User input containing description and event details.
+     * @return A formatted description string with the parsed event.
+     * @throws LumiException If input is invalid or the event cannot be parsed.
+     */
+    private String parseAndFormat(String desc) throws LumiException {
+        validateNotEmpty(desc);
 
+        String[] parts = splitInput(desc);
+        validateParts(parts);
+
+        return formatEvent(parts);
+    }
+
+    /**
+     * Splits the user input into description and event parts.
+     *
+     * @param desc The input string containing task details.
+     * @return A string array with two parts: description and deadline.
+     * @throws LumiException If the input cannot be split into valid parts.
+     */
+    private String[] splitInput(String desc) throws LumiException {
         String[] eventParts = desc.split("/from|/to|\\|From: |\\|To: ");
         boolean hasValidLength = eventParts.length >= 3;
-        assert hasValidLength : "Please enter the full description!";
         if (!hasValidLength) {
             throw new LumiException("Please enter the full description!");
         }
+        return eventParts;
+    }
 
-        boolean hasInvalidDesc = eventParts[0].trim().isEmpty();
-        boolean hasInvalidFromDetails = eventParts[1].trim().isEmpty();
-        boolean hasInvalidEndDetails = eventParts[2].trim().isEmpty();
+    /**
+     * Validates that both description and event parts are non-empty.
+     *
+     * @param parts The string array containing description and deadline.
+     * @throws LumiException If either part is empty.
+     */
+    private void validateParts(String[] parts) throws LumiException {
+        boolean hasInvalidDesc = parts[0].trim().isEmpty();
+        boolean hasInvalidFromDetails = parts[1].trim().isEmpty();
+        boolean hasInvalidEndDetails = parts[2].trim().isEmpty();
 
         if (hasInvalidDesc || hasInvalidEndDetails || hasInvalidFromDetails) {
             throw new LumiException("Please enter an event task in the "
                     + "format: event <task> /from <date/time> /to <date/time>");
-        } else {
-            try {
-                LocalDateTime from = DateTimeParser.parseDate(eventParts[1]);
-                LocalDateTime to = DateTimeParser.parseDate(eventParts[2]);
-                this.desc = eventParts[0].trim() + "|From: " + DateTimeParser.format(from) + "|To: "
-                        + DateTimeParser.format(to);
-            } catch (DateTimeParseException e) {
-                throw new LumiException(e.getMessage());
-            }
+        }
+    }
+
+    /**
+     * Ensures the task description is not null or empty.
+     *
+     * @param desc The input string to check.
+     * @throws LumiException If the description is empty or null.
+     */
+    private void validateNotEmpty(String desc) throws LumiException {
+        if (desc == null || desc.trim().isEmpty()) {
+            throw new LumiException("The task description should not be empty");
+        }
+    }
+
+    /**
+     * Parses and formats the event part into a standardized format.
+     * @param eventParts The event string to be parsed.
+     * @return A formatted task string including the deadline.
+     * @throws LumiException If the deadline cannot be parsed into a {@link LocalDateTime}.
+     */
+    private String formatEvent(String[] eventParts) throws LumiException {
+        try {
+            LocalDateTime from = DateTimeParser.parseDate(eventParts[1]);
+            LocalDateTime to = DateTimeParser.parseDate(eventParts[2]);
+            String desc = eventParts[0].trim() + "|From: " + DateTimeParser.format(from) + "|To: "
+                    + DateTimeParser.format(to);
+            return desc;
+        } catch (DateTimeParseException e) {
+            throw new LumiException(e.getMessage());
         }
     }
 
