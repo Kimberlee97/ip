@@ -41,28 +41,36 @@ public class Storage {
      */
     public List<Task> load() throws IOException, LumiException {
         File file = new File(this.filePath);
-        Scanner scanner = null;
+        ensureFileExists(file);
+
         int errorCount = 0;
-        try {
-            scanner = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            try {
-                file.createNewFile();
-                scanner = new Scanner(file);
-            } catch (IOException a) {
-                throw new LumiException("Your file could not be created: " + e.getMessage());
-            }
-        }
-        while (scanner.hasNext()) {
-            try {
-                Task task = Storage.convertStringToTask(scanner.nextLine());
-                this.list.add(task);
-            } catch (LumiException e) {
-                errorCount += 1;
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNext()) {
+                try {
+                    Task task = convertStringToTask(scanner.nextLine());
+                    this.list.add(task);
+                } catch (LumiException e) {
+                    errorCount++;
+                }
             }
         }
         System.out.println("Number of invalid lines ignored: " + errorCount);
         return list;
+    }
+
+    /**
+     * Ensures that the storage file and its parent directory exists.
+     * @param file The storage file.
+     * @throws IOException
+     */
+    private void ensureFileExists(File file) throws IOException {
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+        if (!file.exists()) {
+            file.createNewFile();
+        }
     }
 
     /**
