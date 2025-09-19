@@ -19,107 +19,203 @@ public class Lumi {
     private TaskList tasks;
 
     /**
-     * Instantiates a new {@code Lumi} object.
-     * @param filePath The path to the text file where tasks will be stored.
-     */
-    public Lumi(String filePath) {
-        this.dialogue = new Dialogue();
-        this.storage = new Storage(filePath);
-        try {
-            this.tasks = new TaskList(storage.load());
-        } catch (IOException | LumiException e) {
-            dialogue.showLoadingError(e);
-            this.tasks = new TaskList();
-        }
-    }
-
-    /**
-     * Instantiates a new {@code Lumi} object.
-     * Sets the text file used to DEFAULT_FILE_PATH, lumi.txt.
+     * Creates a {@code Lumi} instance using the default file path.
      */
     public Lumi() {
         this.dialogue = new Dialogue();
         this.storage = new Storage(DEFAULT_FILE_PATH);
+        loadTasksOrInitializeEmpty();
+    }
+
+    /**
+     * Parses and executes a user command, returning a user-facing message.
+     * Any {@link LumiException} raised during handling is converted into a
+     * message and returned to the caller.
+     *
+     * @param input The raw user input.
+     * @return The user-facing message describing the effect or error.
+     */
+    public String processInput(String input) {
+        try {
+            if (input == null || input.trim().isEmpty()) {
+                throw new LumiException("Please type a command.");
+            }
+
+            String[] parts = input.split(" ", 2);
+            String command = parts[0];
+            String args = (parts.length > 1) ? parts[1].trim() : "";
+
+            String output = routeCommand(command, args);
+            persistIfChanged(command);
+            return output;
+
+        } catch (LumiException e) {
+            return e.getMessage();
+        }
+    }
+
+    /**
+     * Routes a parsed command to its specific handler.
+     *
+     * @param command The command.
+     * @param args The remainder of the user input.
+     * @return The user-facing message.
+     * @throws LumiException If the command is invalid or arguments are missing.
+     */
+    private String routeCommand(String command, String args) throws LumiException {
+        return switch (command) {
+            case "bye" -> handleBye();
+            case "help" -> handleHelp();
+            case "list" -> handleList();
+            case "delete" -> handleDelete(args);
+            case "find" -> handleFind(args);
+            case "mark", "unmark" -> handleMarkUnmark(command, args);
+            case "todo", "event", "deadline" -> handleAdd(command, args);
+            default -> throw new LumiException("Sorry! I'm not sure what you mean ><");
+        };
+    }
+
+    /**
+     * Handles the {@code bye} command.
+     *
+     * @return The farewell message.
+     */
+    private String handleBye() {
+        return dialogue.sendGoodbye();
+    }
+
+    /**
+     * Handles the {@code help} command.
+     *
+     * @return The help dialogue.
+     */
+    private String handleHelp() {
+        return dialogue.showHelpDialogue();
+    }
+
+    /**
+     * Handles the {@code list} command.
+     *
+     * @return The formatted list of tasks or an empty message.
+     */
+    private String handleList() {
+        return tasks.printList();
+    }
+
+    /**
+     * Handles the {@code find} command.
+     *
+     * @param args The keywords to search for.
+     * @return The matching tasks, if any.
+     * @throws LumiException If {@code args} are missing.
+     */
+    private String handleFind(String args) throws LumiException {
+        ensureArgsProvided(args, "Please provide all the necessary details");
+        return tasks.find(args);
+    }
+
+    /**
+     * Handles the {@code todo}/{@code event}/{@code deadline} commands.
+     * <p>
+     * Reconstructs the original input so the {@link TaskList} parser
+     * can determine the exact task subtype and validate its fields.
+     *
+     * @param command The command.
+     * @param args The remainder of the user input.
+     * @return The confirmation message upon successful add.
+     * @throws LumiException If the task cannot be created.
+     */
+    private String handleAdd(String command, String args) throws LumiException {
+        String raw = command + (args.isEmpty() ? "" : " " + args);
+        return tasks.add(raw);
+    }
+
+    /**
+     * Handles the {@code delete} command (1-based index in UI).
+     *
+     * @param args The user-supplied index.
+     * @return The confirmation message upon successful deletion.
+     * @throws LumiException If the index is invalid or missing.
+     */
+    private String handleDelete(String args) throws LumiException {
+        ensureArgsProvided(args, "Please provide all the necessary details");
+        Task removed = tasks.delete(args); // TaskList handles index parsing/validation
+        return dialogue.printDeleteMessage(removed);
+    }
+
+    /**
+     * Handles the {@code mark}/{@code unmark} commands (1-based index in UI).
+     *
+     * @param command Either {@code "mark"} or {@code "unmark"}.
+     * @param args The user-supplied index.
+     * @return A confirmation message if successful.
+     * @throws LumiException If the index is invalid or missing.
+     */
+    private String handleMarkUnmark(String command, String args) throws LumiException {
+        ensureArgsProvided(args, "Please provide a task number");
+        try {
+            int index = Integer.parseInt(args) - 1;
+            if (index < 0 || index >= tasks.getList().size()) {
+                throw new LumiException("Please add a valid task number");
+            }
+            Task t = tasks.getList().get(index);
+            Task updated = "unmark".equals(command) ? t.unmark() : t.mark();
+            return "unmark".equals(command)
+                    ? dialogue.printUnmarkMessage(updated)
+                    : dialogue.printMarkMessage(updated);
+
+        } catch (NumberFormatException e) {
+            throw new LumiException("Please enter a number after mark / unmark");
+        } catch (IndexOutOfBoundsException e) {
+            throw new LumiException("Please add a valid task number");
+        }
+    }
+
+    /**
+     * Loads tasks from storage; if loading fails, initializes an empty list and
+     * shows a loading error via {@link Dialogue}.
+     */
+    private void loadTasksOrInitializeEmpty() {
         try {
             this.tasks = new TaskList(storage.load());
         } catch (IOException | LumiException e) {
-            dialogue.showLoadingError(e);
+            new Dialogue().showLoadingError(e);
             this.tasks = new TaskList();
         }
     }
 
     /**
-     * Processes the user's input.
-     * @param input
-     * @return The output string.
+     * Ensures that a command that requires arguments actually received them.
+     *
+     * @param args The argument string.
+     * @param message The error message to show if missing.
+     * @throws LumiException If no arguments were provided.
      */
-    public String processInput(String input) {
-        String output = "";
-        assert !input.trim().isEmpty() : "Input should not be empty";
-        String[] parts = input.split(" ", 2);
-        String command = parts[0];
-
-        try {
-            switch (command) {
-            case "bye":
-                output = this.dialogue.sendGoodbye();
-                break;
-            case "list":
-                output = this.tasks.printList();
-                break;
-            case "unmark", "mark":
-                try {
-                    if (parts[1].isEmpty()) {
-                        throw new LumiException("Please provide a task number");
-                    }
-                    int index = Integer.parseInt(parts[1]) - 1;
-                    assert (index >= 0) && (index <= this.tasks.getList().size()) : "Your index is invalid";
-                    Task task = this.tasks.getList().get(index);
-                    Task updatedTask;
-                    if (command.equals("unmark")) {
-                        updatedTask = task.unmark();
-                        output = this.dialogue.printUnmarkMessage(updatedTask);
-                    } else {
-                        updatedTask = task.mark();
-                        output = this.dialogue.printMarkMessage(updatedTask);
-                    }
-                } catch (IndexOutOfBoundsException e) {
-                    throw new LumiException("Please add a valid task number");
-                } catch (NumberFormatException e) {
-                    throw new LumiException("Please enter a number after mark / unmark");
-                }
-                break;
-            case "find":
-                if (parts.length < 2) {
-                    throw new LumiException("Please provide all the necessary details");
-                }
-                String keyword = parts[1].trim();
-                assert !keyword.isEmpty() : "The keyword should not be empty";
-                output = this.tasks.find(keyword);
-                break;
-            case "todo", "event", "deadline":
-                output = this.tasks.add(input);
-                break;
-            case "delete":
-                if (parts.length < 2) {
-                    throw new LumiException("Please provide all the necessary details");
-                }
-                String index = parts[1].trim();
-                assert !index.isEmpty() : "The index should not be empty";
-                Task task = this.tasks.delete(index);
-                output = this.dialogue.printDeleteMessage(task);
-                break;
-            case "help":
-                output = this.dialogue.showHelpDialogue();
-                break;
-            default:
-                throw new LumiException("Sorry! I'm not sure what you mean ><");
-            }
-            this.storage.updateFile();
-        } catch (LumiException e) {
-            return e.getMessage();
+    private void ensureArgsProvided(String args, String message) throws LumiException {
+        if (args == null || args.isEmpty()) {
+            throw new LumiException(message);
         }
-        return output;
+    }
+
+    /**
+     * Persists the current state of the task list to disk for mutating commands.
+     *
+     * @param command The executed command.
+     * @throws LumiException If saving fails.
+     */
+    private void persistIfChanged(String command) throws LumiException {
+        if (command.equals("todo")
+                || command.equals("event")
+                || command.equals("deadline")
+                || command.equals("delete")
+                || command.equals("mark")
+                || command.equals("unmark")) {
+            try {
+                storage.updateFile();
+            } catch (Exception e) {
+                throw new LumiException("I couldn't save your tasks. Please try again.");
+            }
+        }
     }
 
     /**

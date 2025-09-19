@@ -1,3 +1,2 @@
 [T][X] SEP research
 [T][ ] research
-[E][ ] CS2100 Lab|From: 15 10 2025 16:00|To: 15 10 2025 18:00

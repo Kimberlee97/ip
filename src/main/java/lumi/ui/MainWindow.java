@@ -28,6 +28,9 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(getClass().getResourceAsStream("/images/User.jpg"));
     private Dialogue dialogue = new Dialogue();
 
+    /**
+     * Initializes the UI components when the controller is loaded.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
