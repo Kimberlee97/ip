@@ -2,7 +2,9 @@ package lumi;
 
 import java.io.IOException;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.util.Duration;
 import lumi.exceptions.LumiException;
 import lumi.storage.Storage;
 import lumi.tasks.Task;
@@ -47,7 +49,7 @@ public class Lumi {
             String args = (parts.length > 1) ? parts[1].trim() : "";
 
             String output = routeCommand(command, args);
-            persistIfChanged(command);
+            saveIfChanged(command);
             return output;
 
         } catch (LumiException e) {
@@ -83,7 +85,9 @@ public class Lumi {
      */
     private String handleBye() {
         String message = dialogue.sendGoodbye();
-        Platform.exit();
+        PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+        pause.setOnFinished(event -> Platform.exit());
+        pause.play();
         return message;
     }
 
@@ -201,12 +205,12 @@ public class Lumi {
     }
 
     /**
-     * Persists the current state of the task list to disk for mutating commands.
+     * Saves the current state of the task list to disk for mutating commands.
      *
      * @param command The executed command.
      * @throws LumiException If saving fails.
      */
-    private void persistIfChanged(String command) throws LumiException {
+    private void saveIfChanged(String command) throws LumiException {
         if (command.equals("todo")
                 || command.equals("event")
                 || command.equals("deadline")
