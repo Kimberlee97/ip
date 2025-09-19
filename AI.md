@@ -1,4 +1,5 @@
 ## AI Usage Log
+- 19/09/25: Used GPT-5 to debug the issue with the application closing too early after 'bye' command.
 - 19/09/25: Used GPT-5 to debug missing storage file issue.
 - 19/09/25: Used GPT-5 to add JavaDoc comments.
 - 19/09/25: Used GPT-5 to improve code quality by reformatting code.
